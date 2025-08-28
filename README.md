@@ -37,7 +37,7 @@ Response: <img  alt="database" src="https://github.com/atomgptlab/agapi/blob/mai
 Prompt: Predict properties of this POSCAR using ALIGNN
 (Upload a XRD file e.g. [this file](https://github.com/atomgptlab/agapi/blob/main/agapi/images/Lab6data.dat))
 
-Response: <img  alt="database" src="https://github.com/atomgptlab/agapi/blob/main/agapi/images/alignn_ff.png" />
+Response: <img  alt="database" src="https://github.com/atomgptlab/agapi/blob/main/agapi/images/xrd_db_match.png" />
 
 
 ## 5. Live arXiv search
