@@ -34,7 +34,7 @@ Response: <img  alt="database" src="https://github.com/atomgptlab/agapi/blob/mai
 
 ## 4. X-ray diffraction to atomic structure
 
-Prompt: Predict properties of this POSCAR using ALIGNN
+Prompt: Convert XRD pattern to POSCAR
 (Upload a XRD file e.g. [this file](https://github.com/atomgptlab/agapi/blob/main/agapi/images/Lab6data.dat))
 
 Response: <img  alt="database" src="https://github.com/atomgptlab/agapi/blob/main/agapi/images/xrd_db_match.png" />
