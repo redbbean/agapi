@@ -8,7 +8,7 @@ setuptools.setup(
     version="2025.8.15",
     author="Kamal Choudhary",
     author_email="kchoudh2@jhu.edu",
-    description="slakonet",
+    description="agapi",
     slakonet=[
         "numpy>=1.22.0",
         "scipy>=1.6.3",
