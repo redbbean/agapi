@@ -5,7 +5,7 @@ A tiny Python SDK + CLI for the AtomGPT.org API (AGAPI).
 ## Install (dev)
 
 ```bash
-pip install -e .
+pip install agapi jarvis-tools
 ```
 
 Set your key once (recommended):
