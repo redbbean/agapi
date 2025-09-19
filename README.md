@@ -12,7 +12,7 @@ Check out [Colab](https://github.com/knc6/jarvis-tools-notebooks/blob/master/jar
 
 # Python SDK examples:
 
-agapi/README.md 
+[agapi/README.md ](https://github.com/atomgptlab/agapi/blob/main/agapi/README.md)
 
 
 
