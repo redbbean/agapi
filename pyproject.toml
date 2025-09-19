@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agapi"
+version = "9.10.2025"
+description = "Python client and CLI for AtomGPT.org API (AGAPI)"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "Apache"}
+authors = [{name="AtomGPTLab community"}]
+keywords = ["materials-science", "JARVIS", "ALIGNN", "DFT", "protein", "xrd", "api-client"]
+dependencies = [
+  "requests>=2.31.0",
+  "jarvis-tools",
+]
+
+[project.urls]
+Homepage = "https://atomgpt.org"
+
+[project.scripts]
+agapi = "agapi.cli:main"
