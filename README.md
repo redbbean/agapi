@@ -1,12 +1,16 @@
 # AtomGPT.org API (AGAPI)
 
+
 AGAPI provides examples of how to interact with https://atomgpt.org/
 
-A command-line and OpenAI API compatible implementation for the website will be available soon.
 
 A significant amount of time in computational materials design is often spent on software installation, which creates a major barrier for newcomers to the field. AGAPI removes this layer by providing APIs that can be used directly for prediction and analysis, thereby lowering entry barriers and accelerating research.
 
-Note: AGAPI (ἀγάπη) in Greek means unconditional love.
+
+# Python SDK examples:
+
+agapi/README.md 
+
 
 
 # Prompt Examples
@@ -53,5 +57,6 @@ Response: <img  alt="database" src="https://github.com/atomgptlab/agapi/blob/mai
 2. https://doi.org/10.1016/j.commatsci.2025.114063
 3. https://doi.org/10.1021/acs.jpclett.4c01126
 
+Note: AGAPI (ἀγάπη) in Greek means unconditional love.
 
 <img  alt="database" src="https://github.com/atomgptlab/agapi/blob/main/agapi/images/atomgpt_org_poster.jpg" />
