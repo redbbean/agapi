@@ -6,6 +6,9 @@ AGAPI provides examples of how to interact with https://atomgpt.org/
 
 A significant amount of time in computational materials design is often spent on software installation, which creates a major barrier for newcomers to the field. AGAPI removes this layer by providing APIs that can be used directly for prediction and analysis, thereby lowering entry barriers and accelerating research.
 
+# Quickstart with Colab
+
+Check out [Colab](https://github.com/knc6/jarvis-tools-notebooks/blob/master/jarvis-tools-notebooks/agapi_example.ipynb)
 
 # Python SDK examples:
 
