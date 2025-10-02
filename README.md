@@ -14,7 +14,9 @@ Check out [Colab](https://github.com/knc6/jarvis-tools-notebooks/blob/master/jar
 
 [agapi/README.md ](https://github.com/atomgptlab/agapi/blob/main/agapi/README.md)
 
+# YouTube Demos
 
+[https://www.youtube.com/playlist?list=PLjf6vHVv7AoInTVQmfNSMs_12DBXYCcDd](https://www.youtube.com/playlist?list=PLjf6vHVv7AoInTVQmfNSMs_12DBXYCcDd)
 
 # Prompt Examples
 
