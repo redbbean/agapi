@@ -176,7 +176,7 @@ Watch AGAPI in action on YouTube:
 
 ## 📚 References
 
-1. [Choudhary, K. *et al.*, MRS Bull. 2025.](https://doi.org/10.1007/s40192-025-00410-9)  
+1. [Choudhary, K. *et al.*, IMMI. 2025.](https://doi.org/10.1007/s40192-025-00410-9)  
 2. [Choudhary, K. *et al.*, Comput. Mater. Sci. 2025.](https://doi.org/10.1016/j.commatsci.2025.114063)  
 3. [Choudhary, K. *et al.*, J. Phys. Chem. Lett. 2024.](https://doi.org/10.1021/acs.jpclett.4c01126)
 
