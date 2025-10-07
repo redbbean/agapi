@@ -185,6 +185,7 @@ Watch AGAPI in action on YouTube:
 ## ❤️ Note
 
 > “AGAPI (ἀγάπη)” is a Greek word meaning **unconditional love**.
+> DISCLAIMER: AtomGPT.org can make mistakes. Verify important information.
 
 We hope this API fosters **open, collaborative, and accelerated discovery** in materials science.
 
