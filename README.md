@@ -153,6 +153,8 @@ Outputs a modified POSCAR file with requested atomic substitutions.
 
 Enables **voice-based chat** for hands-free interaction with materials science tools.
 
+**The table below lists available endpoints, the corresponding module, and description.**
+
 | Endpoint | Module / Function | Description |
 |-----------|------------------|--------------|
 | `/materials/property` | **ALIGNN** | Predicts materials properties such as formation energy, bandgap, and elastic moduli directly from structure files. |
