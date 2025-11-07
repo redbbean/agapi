@@ -153,6 +153,18 @@ Outputs a modified POSCAR file with requested atomic substitutions.
 
 Enables **voice-based chat** for hands-free interaction with materials science tools.
 
+**The table below lists available endpoints, the corresponding module, and description.**
+
+| Endpoint | Module / Function | Description |
+|-----------|------------------|--------------|
+| `/materials/property` | **ALIGNN** | Predicts materials properties such as formation energy, bandgap, and elastic moduli directly from structure files. |
+| `/materials/forcefield` | **ALIGNN-FF** | Computes energies, forces, and stresses for structure relaxation and molecular dynamics simulations with near-DFT accuracy. |
+| `/materials/xrd` | **XRDStructurePrediction** | Determines atomic structures from uploaded XRD files to identify crystal structures. |
+| `/literature/search` | **arXivSearchAgent** | Retrieves and summarizes recent arXiv or web publications on specified research topics. |
+| `/visualization/structure` | **StructureViewer** | Generates interactive 3D visualizations of input structures and enables atomic structure editing. |
+| `/database/jarvis` | **JarvisAPI** | Provides direct access to JARVIS materials data and pre-computed properties for workflow integration. |
+| `/interface/voice` | **VoiceChat** | Enables voice-based chat for hands-free interaction with AGAPI. |
+
 ---
 
 ## 🚀 Quickstart
