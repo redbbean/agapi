@@ -164,7 +164,7 @@ Enables **voice-based chat** for hands-free interaction with materials science t
 | `/visualization/structure` | **StructureViewer** | Generates interactive 3D visualizations of input structures and enables atomic structure editing. |
 | `/database/jarvis` | **JarvisAPI** | Provides direct access to JARVIS materials data and pre-computed properties for workflow integration. |
 | `/interface/voice` | **VoiceChat** | Enables voice-based chat for hands-free interaction with AGAPI. |
-
+| `/literature/search` | **Crossref** | Accesses publication metadata and citation information through the Crossref API. |
 ---
 
 ## 🚀 Quickstart
