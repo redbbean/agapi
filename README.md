@@ -10,6 +10,7 @@ A significant amount of time in computational materials design is often spent on
 
 ## 📖 Table of Contents
 
+- [URL based query Examples](#urls)
 - [🧠 Capabilities & Example Prompts](#-capabilities--example-prompts)
   - [1️⃣ Access Materials Databases](#1️⃣-access-materials-databases)
   - [2️⃣ Graph Neural Network Property Prediction](#2️⃣-graph-neural-network-property-prediction-alignn)
@@ -29,6 +30,27 @@ A significant amount of time in computational materials design is often spent on
 - [❤️ Note](#️-note)
 
 ---
+
+
+
+## URL based queries  
+*Replace `sk-XYZ` with your API key from atomgpt.org account settings.*  
+
+| #  | URL | Description |
+|----|-----|-------------|
+| 1 | `https://atomgpt.org/jarvis_dft/query?elements=Si,C&APIKEY=sk-XYZ` | Find all entries that contain the elements Si or C. |
+| 2 | `https://atomgpt.org/jarvis_dft/query?formula=Al2O3&APIKEY=sk-XYZ` | Query JARVIS-DFT for Al₂O₃. |
+| 3 | `https://atomgpt.org/jarvis_dft/query?APIKEY=sk-XYZ&propranges={n-Seebeck:{min:-200},p-Seebeck:{min:400},avg_elec_mass:{min:0.2,max:0.8}}` | Query by Seebeck coefficient and effective-mass ranges. |
+| 4 | `https://atomgpt.org/jarvis_dft/query?APIKEY=sk-XYZ&propranges={mbj_bandgap:{min:2},epsx:{min:10},bulk_modulus_kv:{min:50},ehull:{max:0.2}}` | Select materials by band gap, dielectric response, bulk modulus, and hull energy. |
+| 5 | `https://atomgpt.org/mp/query?formula=Al2O3&APIKEY=sk-XYZ` | Query Materials Project for Al₂O₃. |
+| 6 | `https://atomgpt.org/oqmd/query?formula=Al2O3&APIKEY=sk-XYZ` | Query OQMD for Al₂O₃. |
+| 7 | `https://atomgpt.org/alignn/query?jid=JVASP-1002&APIKEY=sk-XYZ` | Retrieve ALIGNN predictions for JARVIS entry JVASP-1002. |
+| 8 | `https://atomgpt.org/alignn/query?poscar=System\n1.0\n3.2631502048902807 0.0 -0.0\n0.0 3.2631502048902807 0.0\n0.0 -0.0 3.2631502048902807\nTi Au\n1 1\ndirect\n0.5 0.5 0.5 Ti\n0.0 0.0 0.0 Au\n&APIKEY=sk-XYZ` | Send a POSCAR (URL-encoded newlines) for GNN predictions. |
+| 9 | `https://atomgpt.org/pxrd/query?pattern=MoS2\n10 20\n5 50\n&APIKEY=sk-XYZ` | Generate atomic structure from an X-ray diffraction pattern. Header as chemical formula, then 2 \theta vs intensity values. |
+| 10 | `https://atomgpt.org/arxiv?query=MgB2&APIKEY=sk-XYZ` | Search arXiv for papers containing “MgB2”. |
+| 11 | `https://atomgpt.org/crossref?query=CrMnFeCoNi&rows=100&APIKEY=sk-XYZ` | Retrieve up to 100 recent publications mentioning the CrMnFeCoNi alloy. |
+
+
 
 ## 🧠 Capabilities & Example Prompts
 
