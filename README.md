@@ -36,7 +36,10 @@ A significant amount of time in computational materials design is often spent on
 ## API Docs  
 *Replace `sk-XYZ` with your API key from atomgpt.org>>account>>settings.*  
 
+[AtomGPT.org/docs](https://atomgpt.org/docs)
+
 ![OpenAPI](https://github.com/atomgptlab/agapi/blob/main/agapi/images/agapi.png)
+
 
 
 ## 🧠 Capabilities & Example Prompts
