@@ -8,6 +8,10 @@ A significant amount of time in computational materials design is often spent on
 
 ---
 
+ [![Open in Google Colab]](https://colab.research.google.com/github/knc6/jarvis-tools-notebooks/blob/master/jarvis-tools-notebooks/alignn_jarvis_leaderboard.ipynb)
+
+ [Open in Google Colab]: https://colab.research.google.com/assets/colab-badge.svg
+ 
 ## 📖 Table of Contents
 
 - [API Docs](#urls)
