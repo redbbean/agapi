@@ -273,10 +273,15 @@ def alignn_predict(
             "formation_energy": result.get(
                 "jv_formation_energy_peratom_alignn"
             ),
+            "energy_eV": result.get("jv_optb88vdw_total_energy_alignn"),
             "bandgap_optb88vdw": result.get("jv_optb88vdw_bandgap_alignn"),
             "bandgap_mbj": result.get("jv_mbj_bandgap_alignn"),
             "bulk_modulus": result.get("jv_bulk_modulus_kv_alignn"),
             "shear_modulus": result.get("jv_shear_modulus_gv_alignn"),
+            "piezo_max_dielectric": result.get(
+                "jv_dfpt_piezo_max_dielectric_alignn"
+            ),
+            "Tc_supercon": result.get("jv_supercon_tc_alignn"),
         }
     except Exception as e:
         return {"error": str(e)}
