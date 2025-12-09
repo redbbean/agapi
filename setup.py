@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="agapi",
-    version="2025.9.15",
+    version="2025.11.15",
     author="Kamal Choudhary",
     author_email="kchoudh2@jhu.edu",
     description="agapi",
@@ -13,6 +13,7 @@ setuptools.setup(
         "numpy>=1.22.0",
         "scipy>=1.6.3",
         "jarvis-tools>=2021.07.19",
+        "openai-agents",
     ],
     long_description=long_description,
     long_description_content_type="text/markdown",
