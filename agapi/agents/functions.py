@@ -5,7 +5,6 @@ from .client import AGAPIClient
 from .aliases import normalize_property_name
 
 
-# JARVIS-DFT Tools
 def query_by_formula(formula: str, api_client: AGAPIClient) -> Dict[str, Any]:
     """Get all polymorphs of a chemical formula"""
     try:
@@ -14,6 +13,12 @@ def query_by_formula(formula: str, api_client: AGAPIClient) -> Dict[str, Any]:
 
         materials = []
         for mat in result.get("results", []):
+            # Prioritize MBJ bandgap, fallback to OptB88vdW
+            bandgap = mat.get("mbj_bandgap") or mat.get("optb88vdw_bandgap")
+            bandgap_source = (
+                "mbj" if mat.get("mbj_bandgap") is not None else "optb88vdw"
+            )
+
             materials.append(
                 {
                     "jid": mat.get("jid"),
@@ -23,12 +28,54 @@ def query_by_formula(formula: str, api_client: AGAPIClient) -> Dict[str, Any]:
                         "formation_energy_peratom"
                     ),
                     "bulk_modulus_kv": mat.get("bulk_modulus_kv"),
+                    "bandgap": bandgap,  # Preferred bandgap
+                    "bandgap_source": bandgap_source,  # Which method was used
+                    "mbj_bandgap": mat.get(
+                        "mbj_bandgap"
+                    ),  # Keep both available
                     "optb88vdw_bandgap": mat.get("optb88vdw_bandgap"),
                     "ehull": mat.get("ehull"),
                 }
             )
 
         return {"total": result.get("total", 0), "materials": materials}
+    except Exception as e:
+        return {"error": str(e)}
+
+
+def query_by_jid(jid: str, api_client: AGAPIClient) -> Dict[str, Any]:
+    """Get detailed info for a JARVIS ID including POSCAR"""
+    try:
+        params = {"jid": jid, "limit": 1}
+        result = api_client.request("jarvis_dft/query", params)
+
+        if result.get("results"):
+            mat = result["results"][0]
+
+            # Prioritize MBJ bandgap
+            bandgap = mat.get("mbj_bandgap") or mat.get("optb88vdw_bandgap")
+            bandgap_source = (
+                "mbj" if mat.get("mbj_bandgap") is not None else "optb88vdw"
+            )
+
+            return {
+                "jid": mat.get("jid"),
+                "formula": mat.get("formula"),
+                "spg_symbol": mat.get("spg_symbol"),
+                "formation_energy_peratom": mat.get(
+                    "formation_energy_peratom"
+                ),
+                "bulk_modulus_kv": mat.get("bulk_modulus_kv"),
+                "bandgap": bandgap,  # Preferred bandgap
+                "bandgap_source": bandgap_source,
+                "mbj_bandgap": mat.get("mbj_bandgap"),
+                "optb88vdw_bandgap": mat.get("optb88vdw_bandgap"),
+                "hse_gap": mat.get("hse_gap"),
+                "ehull": mat.get("ehull"),
+                "POSCAR": mat.get("POSCAR"),
+            }
+
+        return {"error": f"Material {jid} not found"}
     except Exception as e:
         return {"error": str(e)}
 
@@ -43,6 +90,11 @@ def query_by_elements(
 
         materials = []
         for mat in result.get("results", [])[:20]:
+            bandgap = mat.get("mbj_bandgap") or mat.get("optb88vdw_bandgap")
+            bandgap_source = (
+                "mbj" if mat.get("mbj_bandgap") is not None else "optb88vdw"
+            )
+
             materials.append(
                 {
                     "jid": mat.get("jid"),
@@ -52,6 +104,9 @@ def query_by_elements(
                         "formation_energy_peratom"
                     ),
                     "bulk_modulus_kv": mat.get("bulk_modulus_kv"),
+                    "bandgap": bandgap,
+                    "bandgap_source": bandgap_source,
+                    "mbj_bandgap": mat.get("mbj_bandgap"),
                     "optb88vdw_bandgap": mat.get("optb88vdw_bandgap"),
                     "ehull": mat.get("ehull"),
                 }
@@ -62,32 +117,6 @@ def query_by_elements(
             "showing": len(materials),
             "materials": materials,
         }
-    except Exception as e:
-        return {"error": str(e)}
-
-
-def query_by_jid(jid: str, api_client: AGAPIClient) -> Dict[str, Any]:
-    """Get detailed info for a JARVIS ID including POSCAR"""
-    try:
-        params = {"jid": jid, "limit": 1}
-        result = api_client.request("jarvis_dft/query", params)
-
-        if result.get("results"):
-            mat = result["results"][0]
-            return {
-                "jid": mat.get("jid"),
-                "formula": mat.get("formula"),
-                "spg_symbol": mat.get("spg_symbol"),
-                "formation_energy_peratom": mat.get(
-                    "formation_energy_peratom"
-                ),
-                "bulk_modulus_kv": mat.get("bulk_modulus_kv"),
-                "optb88vdw_bandgap": mat.get("optb88vdw_bandgap"),
-                "ehull": mat.get("ehull"),
-                "POSCAR": mat.get("POSCAR"),
-            }
-
-        return {"error": f"Material {jid} not found"}
     except Exception as e:
         return {"error": str(e)}
 
@@ -120,6 +149,11 @@ def query_by_property(
 
         materials = []
         for mat in result.get("results", [])[:20]:
+            bandgap = mat.get("mbj_bandgap") or mat.get("optb88vdw_bandgap")
+            bandgap_source = (
+                "mbj" if mat.get("mbj_bandgap") is not None else "optb88vdw"
+            )
+
             materials.append(
                 {
                     "jid": mat.get("jid"),
@@ -129,6 +163,9 @@ def query_by_property(
                         "formation_energy_peratom"
                     ),
                     "bulk_modulus_kv": mat.get("bulk_modulus_kv"),
+                    "bandgap": bandgap,
+                    "bandgap_source": bandgap_source,
+                    "mbj_bandgap": mat.get("mbj_bandgap"),
                     "optb88vdw_bandgap": mat.get("optb88vdw_bandgap"),
                     "ehull": mat.get("ehull"),
                     prop: mat.get(prop),
@@ -197,6 +234,12 @@ def find_extreme(
         else:
             best = min(with_property, key=lambda x: x.get(prop, float("inf")))
 
+        # Get preferred bandgap
+        bandgap = best.get("mbj_bandgap") or best.get("optb88vdw_bandgap")
+        bandgap_source = (
+            "mbj" if best.get("mbj_bandgap") is not None else "optb88vdw"
+        )
+
         return {
             "total_candidates": len(results),
             "property": prop,
@@ -208,6 +251,9 @@ def find_extreme(
             "formation_energy_peratom": best.get("formation_energy_peratom"),
             "bulk_modulus_kv": best.get("bulk_modulus_kv"),
             "ehull": best.get("ehull"),
+            "bandgap": bandgap,
+            "bandgap_source": bandgap_source,
+            "mbj_bandgap": best.get("mbj_bandgap"),
             "optb88vdw_bandgap": best.get("optb88vdw_bandgap"),
         }
     except Exception as e:

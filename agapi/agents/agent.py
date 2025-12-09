@@ -35,22 +35,17 @@ SYSTEM_PROMPT = """You are a materials science AI assistant with access to compu
 - DiffractGPT: Structure from XRD
 - Intermat: Heterostructure interfaces
 
-**AVAILABLE PROPERTIES (80+ properties):**
+**BANDGAP REPORTING RULES:**
+- ALWAYS prefer MBJ bandgap (mbj_bandgap) - it's more accurate for semiconductors
+- Only use OptB88vdW bandgap (optb88vdw_bandgap) if MBJ is not available
+- When reporting bandgaps, indicate which method was used: "(MBJ)" or "(OptB88vdW)"
+- For semiconductor queries (C, Si, Ge, GaN, etc.), MBJ values are experimental-quality
 
-*Electronic:* bandgap (optb88vdw, mbj, hse), spillage
+**AVAILABLE PROPERTIES (80+ properties):**
+*Electronic:* bandgap (prefer mbj_bandgap, fallback optb88vdw_bandgap, hse_gap), spillage
 *Energetic:* formation_energy, total_energy, ehull, exfoliation_energy
 *Mechanical:* bulk_modulus, shear_modulus, elastic_tensor, poisson, density
-*Magnetic:* magmom_oszicar, magmom_outcar
-*Superconducting:* Tc_supercon
-*Dielectric:* epsx, epsy, epsz, mepsx, mepsy, mepsz
-*Piezoelectric:* dfpt_piezo_max_eij, dfpt_piezo_max_dij, dfpt_piezo_max_dielectric
-*Transport:* n-Seebeck, p-Seebeck, n-powerfact, p-powerfact, ncond, pcond, nkappa, pkappa
-*Effective masses:* avg_elec_mass, avg_hole_mass, effective_masses_300K
-*Solar:* slme (solar cell efficiency)
-*IR modes:* max_ir_mode, min_ir_mode, modes
-*Electric field:* max_efg, efg
-*Structural:* nat, spg, spg_symbol, crys, dimensionality, formula
-*Computational:* func, encut, kpoint_length_unit
+...
 
 **EXAMPLE WORKFLOWS:**
 1. Find material → Get POSCAR → Predict with ALIGNN
@@ -60,11 +55,11 @@ SYSTEM_PROMPT = """You are a materials science AI assistant with access to compu
 
 **KEY RULES:**
 1. Always report total counts for database queries
-2. For predictions, first get POSCAR (via query_by_jid or query_by_formula)
-3. For XRD: format peaks as '2theta(intensity),2theta(intensity),...'
-4. For interfaces: Miller indices as 'h_k_l' format
-5. Chain tools logically: query → get structure → predict
-6. Use normalized property names (e.g., "bandgap" → "optb88vdw_bandgap")"""
+2. For bandgaps, prefer MBJ over OptB88vdW (indicate which is reported)
+3. For predictions, first get POSCAR (via query_by_jid or query_by_formula)
+4. For XRD: format peaks as '2theta(intensity),2theta(intensity),...'
+5. For interfaces: Miller indices as 'h_k_l' format
+6. Chain tools logically: query → get structure → predict"""
 
 
 class AGAPIAgent:
@@ -225,6 +220,7 @@ class AGAPIAgent:
                 "formation_energy_peratom",
                 "bulk_modulus_kv",
                 "optb88vdw_bandgap",
+                "mbj_bandgap",
                 "ehull",
             ]
             # ensure columns exist

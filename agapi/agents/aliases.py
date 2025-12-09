@@ -1,10 +1,10 @@
 PROPERTY_ALIASES = {
     # ==================== BANDGAP ====================
-    "bandgap": "optb88vdw_bandgap",
-    "band gap": "optb88vdw_bandgap",
-    "band-gap": "optb88vdw_bandgap",
-    "gap": "optb88vdw_bandgap",
-    "bg": "optb88vdw_bandgap",
+    "bandgap": "mbj_bandgap",
+    "band gap": "mbj_bandgap",
+    "band-gap": "mbj_bandgap",
+    "gap": "mbj_bandgap",
+    "bg": "mbj_bandgap",
     "electronic bandgap": "optb88vdw_bandgap",
     "optb88vdw bandgap": "optb88vdw_bandgap",
     "optb88vdw_bandgap": "optb88vdw_bandgap",
