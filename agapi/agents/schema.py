@@ -124,14 +124,26 @@ TOOLS_SCHEMA = [
         "type": "function",
         "function": {
             "name": "slakonet_bandstructure",
-            "description": "Calculate electronic band structure using SlakoNet",
+            "description": "Calculate electronic band structure and density of states using SlakoNet tight-binding model. Returns band gap, VBM, CBM values AND a band structure plot image. Works best for structures with ≤10 atoms.",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "poscar": {"type": "string"},
-                    "jid": {"type": "string"},
+                    "poscar": {
+                        "type": "string",
+                        "description": "POSCAR format structure string",
+                    },
+                    "energy_range_min": {
+                        "type": "number",
+                        "description": "Minimum energy for plot in eV (default: -8.0)",
+                        "default": -8.0,
+                    },
+                    "energy_range_max": {
+                        "type": "number",
+                        "description": "Maximum energy for plot in eV (default: 8.0)",
+                        "default": 8.0,
+                    },
                 },
-                "required": [],
+                "required": ["poscar"],
             },
         },
     },

@@ -303,6 +303,71 @@ def alignn_ff_relax(poscar: str, api_client: AGAPIClient) -> Dict[str, Any]:
 
 # SlakoNet Tools
 def slakonet_bandstructure(
+    poscar: str,
+    energy_range_min: float = -8.0,
+    energy_range_max: float = 8.0,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Calculate electronic band structure using SlakoNet.
+    Returns both band structure image and electronic properties.
+    """
+    try:
+        import httpx
+        import base64
+
+        # Prepare request
+        data = {
+            "poscar_string": poscar,
+            "energy_range_min": energy_range_min,
+            "energy_range_max": energy_range_max,
+            "model_path": "/path/to/slakonet_v0/slakonet_v0.pt",  # Default path
+        }
+
+        # Make request with httpx to get full response
+        response = httpx.post(
+            f"{api_client.api_base}/slakonet/bandstructure",
+            data=data,
+            headers={"Authorization": f"Bearer {api_client.api_key}"},
+            timeout=api_client.timeout,
+        )
+
+        if response.status_code == 200:
+            # Extract properties from headers
+            band_gap = response.headers.get("X-Band-Gap", "N/A")
+            vbm = response.headers.get("X-VBM", "N/A")
+            cbm = response.headers.get("X-CBM", "N/A")
+
+            # Get image data
+            image_data = response.content
+            image_base64 = base64.b64encode(image_data).decode("utf-8")
+
+            # Get filename from Content-Disposition
+            content_disp = response.headers.get("Content-Disposition", "")
+            filename = "bandstructure.png"
+            if "filename=" in content_disp:
+                filename = content_disp.split("filename=")[1].strip()
+
+            return {
+                "status": "success",
+                "band_gap_eV": band_gap,
+                "vbm_eV": vbm,
+                "cbm_eV": cbm,
+                "image_base64": image_base64,
+                "image_filename": filename,
+                "message": f"Band structure calculated. Band gap: {band_gap} eV, VBM: {vbm} eV, CBM: {cbm} eV",
+            }
+        else:
+            return {
+                "error": f"SlakoNet request failed: {response.status_code}",
+                "detail": response.text,
+            }
+
+    except Exception as e:
+        return {"error": f"SlakoNet error: {str(e)}"}
+
+
+def slakonet_bandstructureX(
     poscar: str = None, jid: str = None, api_client: AGAPIClient = None
 ) -> Dict[str, Any]:
     """Calculate band structure using SlakoNet"""
