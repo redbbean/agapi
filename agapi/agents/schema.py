@@ -170,20 +170,22 @@ TOOLS_SCHEMA = [
         "type": "function",
         "function": {
             "name": "alignn_predict",
-            "description": "Predict properties using ALIGNN ML model (formation energy, bandgap, moduli)",
+            "description": "Predict material properties using ALIGNN machine learning models. Predicts formation energy, bandgap (OptB88vdW and MBJ), elastic moduli (bulk and shear), piezoelectric properties, and superconducting critical temperature. Can accept either a POSCAR structure string or a JARVIS-ID.",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "poscar": {
                         "type": "string",
-                        "description": "POSCAR structure",
+                        "description": "POSCAR format structure string. Required if jid is not provided. Contains lattice vectors, atomic species, and atomic positions.",
                     },
                     "jid": {
                         "type": "string",
-                        "description": "JARVIS ID (alternative)",
+                        "description": "JARVIS-ID (e.g., 'JVASP-1002', 'JVASP-816'). If provided, the structure will be fetched from JARVIS database and poscar parameter will be ignored. Use this when you know the JARVIS-ID of the material.",
                     },
                 },
-                "required": [],
+                "required": [
+                    "poscar"
+                ],  # poscar is required by the function signature, but jid can override it
             },
         },
     },

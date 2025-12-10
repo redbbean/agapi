@@ -261,6 +261,65 @@ def find_extreme(
 
 
 # ALIGNN Tools
+def alignn_predict(
+    poscar: str = None, jid: str = None, *, api_client: AGAPIClient = None
+) -> Dict[str, Any]:
+    """Predict material properties using ALIGNN machine learning models."""
+    try:
+        import httpx
+        import urllib.parse
+
+        # Validate input
+        if not jid and not poscar:
+            return {"error": "Either poscar or jid must be provided"}
+
+        # Build URL manually to match working format
+        base_url = f"{api_client.api_base}/alignn/query"
+
+        if jid:
+            # Format: ?jid=JVASP-667&APIKEY="sk-xxx"
+            url = f'{base_url}?jid={jid}&APIKEY="{api_client.api_key}"'
+        else:
+            # Format: ?poscar="System\n..."&APIKEY="sk-xxx"
+            poscar_encoded = urllib.parse.quote(poscar)
+            url = f'{base_url}?poscar="{poscar_encoded}"&APIKEY="{api_client.api_key}"'
+
+        # Make GET request
+        response = httpx.get(url, timeout=120.0)
+        response.raise_for_status()
+        result = response.json()
+
+        if not result:
+            return {"error": "No result returned from ALIGNN"}
+
+        if isinstance(result, dict) and "error" in result:
+            return {"error": result["error"]}
+
+        return {
+            "status": "success",
+            "jid": jid if jid else "custom_structure",
+            "formation_energy": result.get(
+                "jv_formation_energy_peratom_alignn"
+            ),
+            "energy_eV": result.get("jv_optb88vdw_total_energy_alignn"),
+            "bandgap_optb88vdw": result.get("jv_optb88vdw_bandgap_alignn"),
+            "bandgap_mbj": result.get("jv_mbj_bandgap_alignn"),
+            "bandgap": result.get("jv_mbj_bandgap_alignn")
+            or result.get("jv_optb88vdw_bandgap_alignn"),
+            "bulk_modulus": result.get("jv_bulk_modulus_kv_alignn"),
+            "shear_modulus": result.get("jv_shear_modulus_gv_alignn"),
+            "piezo_max_dielectric": result.get(
+                "jv_dfpt_piezo_max_dielectric_alignn"
+            ),
+            "Tc_supercon": result.get("jv_supercon_tc_alignn"),
+        }
+
+    except httpx.HTTPStatusError as e:
+        return {"error": f"HTTP {e.response.status_code}: {e.response.text}"}
+    except Exception as e:
+        return {"error": f"ALIGNN prediction failed: {str(e)}"}
+
+
 def alignn_predictX(
     poscar: str, jid: Optional[str] = None, api_client: AGAPIClient = None
 ) -> Dict[str, Any]:
@@ -426,7 +485,319 @@ def slakonet_bandstructureX(
         return {"error": str(e)}
 
 
-def alignn_predict(
+def alignn_predictX(
+    poscar: str = None,
+    jid: str = None,
+    property_name: str = "all",
+    *,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Predict material properties using ALIGNN ML models.
+
+    Args:
+        poscar: POSCAR format structure string (optional if jid provided)
+        jid: JARVIS-ID to use directly (optional if poscar provided)
+        property_name: Property to predict (default: "all")
+        api_client: API client instance
+
+    Returns:
+        dict with predicted properties
+    """
+    try:
+        # Build params - backend accepts either poscar or jid
+        if jid:
+            params = {"jid": jid}
+        elif poscar:
+            params = {"poscar": poscar}
+        else:
+            return {"error": "Either poscar or jid must be provided"}
+
+        # Call ALIGNN API endpoint
+        result = api_client.request("alignn/query", params, method="POST")
+
+        if not result or (isinstance(result, dict) and "error" in result):
+            return {
+                "error": f"ALIGNN prediction failed: {result.get('error', 'Unknown error')}"
+            }
+
+        # Parse and structure the response
+        predictions = {}
+
+        # Formation energy
+        if "jv_formation_energy_peratom_alignn" in result:
+            predictions["formation_energy_peratom"] = result[
+                "jv_formation_energy_peratom_alignn"
+            ]
+
+        # Total energy
+        if "jv_optb88vdw_total_energy_alignn" in result:
+            predictions["total_energy"] = result[
+                "jv_optb88vdw_total_energy_alignn"
+            ]
+
+        # Bandgaps (prioritize MBJ)
+        if "jv_mbj_bandgap_alignn" in result:
+            predictions["bandgap"] = result["jv_mbj_bandgap_alignn"]
+            predictions["bandgap_type"] = "MBJ (more accurate)"
+        elif "jv_optb88vdw_bandgap_alignn" in result:
+            predictions["bandgap"] = result["jv_optb88vdw_bandgap_alignn"]
+            predictions["bandgap_type"] = "OptB88vdW"
+
+        # Elastic properties
+        if "jv_bulk_modulus_kv_alignn" in result:
+            predictions["bulk_modulus_kv"] = result[
+                "jv_bulk_modulus_kv_alignn"
+            ]
+        if "jv_shear_modulus_gv_alignn" in result:
+            predictions["shear_modulus_gv"] = result[
+                "jv_shear_modulus_gv_alignn"
+            ]
+
+        # Piezoelectric
+        if "jv_dfpt_piezo_max_dielectric_alignn" in result:
+            predictions["max_piezo_dielectric"] = result[
+                "jv_dfpt_piezo_max_dielectric_alignn"
+            ]
+
+        # Superconductivity
+        if "jv_supercon_tc_alignn" in result:
+            predictions["supercon_tc"] = result["jv_supercon_tc_alignn"]
+
+        # Exfoliation energy
+        if "jv_exfoliation_energy_alignn" in result:
+            predictions["exfoliation_energy"] = result[
+                "jv_exfoliation_energy_alignn"
+            ]
+
+        return {
+            "status": "success",
+            "predictions": predictions,
+            "jid": jid if jid else "custom_structure",
+            "raw_result": result,  # Include full result for debugging
+            "message": f"ALIGNN predictions completed ({len(predictions)} properties)",
+        }
+
+    except Exception as e:
+        return {"error": f"ALIGNN prediction error: {str(e)}"}
+
+
+def alignn_predictX(
+    poscar: str, *, api_client: AGAPIClient = None
+) -> Dict[str, Any]:
+    """
+    Predict properties using ALIGNN ML models.
+
+    Args:
+        poscar: POSCAR format structure string
+        api_client: API client instance (injected by agent)
+    """
+    try:
+        # Parse POSCAR
+        from jarvis.io.vasp.inputs import Poscar
+
+        atoms = Poscar.from_string(poscar).atoms
+
+        if atoms.num_atoms > 50:
+            return {
+                "error": f"Structure too large ({atoms.num_atoms} atoms). Max: 50"
+            }
+
+        # Make request
+        params = {"poscar": poscar}
+        result = api_client.request("alignn/query", params)
+
+        return {
+            "status": "success",
+            "predictions": result,
+            "num_atoms": atoms.num_atoms,
+            "formula": atoms.composition.reduced_formula,
+        }
+    except Exception as e:
+        return {"error": f"ALIGNN prediction error: {str(e)}"}
+
+
+def alignn_predictX(
+    poscar: str = None,
+    jid: str = None,
+    property_name: str = "all",
+    *,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Predict material properties using ALIGNN ML models.
+
+    Args:
+        poscar: POSCAR format structure string (optional if jid provided)
+        jid: JARVIS-ID to use directly (optional if poscar provided)
+        property_name: Property to predict (default: "all")
+        api_client: API client instance
+
+    Returns:
+        dict with predicted properties
+    """
+    try:
+        # Build params - backend accepts either poscar or jid
+        if jid:
+            params = {"jid": jid}
+        elif poscar:
+            params = {"poscar": poscar}
+        else:
+            return {"error": "Either poscar or jid must be provided"}
+
+        # Call ALIGNN API endpoint
+        result = api_client.request("alignn/query", params, method="POST")
+        print("resut", result)
+        if not result or (isinstance(result, dict) and "error" in result):
+            return {
+                "error": f"ALIGNN prediction failed: {result.get('error', 'Unknown error')}"
+            }
+
+        # Parse and structure the response
+        predictions = {}
+
+        # Formation energy
+        if "jv_formation_energy_peratom_alignn" in result:
+            predictions["formation_energy_peratom"] = result[
+                "jv_formation_energy_peratom_alignn"
+            ]
+
+        # Total energy
+        if "jv_optb88vdw_total_energy_alignn" in result:
+            predictions["total_energy"] = result[
+                "jv_optb88vdw_total_energy_alignn"
+            ]
+
+        # Bandgaps (prioritize MBJ)
+        if "jv_mbj_bandgap_alignn" in result:
+            predictions["bandgap"] = result["jv_mbj_bandgap_alignn"]
+            predictions["bandgap_type"] = "MBJ (more accurate)"
+        elif "jv_optb88vdw_bandgap_alignn" in result:
+            predictions["bandgap"] = result["jv_optb88vdw_bandgap_alignn"]
+            predictions["bandgap_type"] = "OptB88vdW"
+
+        # Elastic properties
+        if "jv_bulk_modulus_kv_alignn" in result:
+            predictions["bulk_modulus_kv"] = result[
+                "jv_bulk_modulus_kv_alignn"
+            ]
+        if "jv_shear_modulus_gv_alignn" in result:
+            predictions["shear_modulus_gv"] = result[
+                "jv_shear_modulus_gv_alignn"
+            ]
+
+        # Piezoelectric
+        if "jv_dfpt_piezo_max_dielectric_alignn" in result:
+            predictions["max_piezo_dielectric"] = result[
+                "jv_dfpt_piezo_max_dielectric_alignn"
+            ]
+
+        # Superconductivity
+        if "jv_supercon_tc_alignn" in result:
+            predictions["supercon_tc"] = result["jv_supercon_tc_alignn"]
+
+        return {
+            "status": "success",
+            "predictions": predictions,
+            "jid": jid if jid else "custom_structure",
+            "raw_result": result,  # Include full result for debugging
+            "message": f"ALIGNN predictions completed ({len(predictions)} properties)",
+        }
+
+    except Exception as e:
+        return {"error": f"ALIGNN prediction error: {str(e)}"}
+
+
+def alignn_predictX(
+    poscar: str = None,
+    jid: str = None,
+    property_name: str = "all",
+    *,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Predict material properties using ALIGNN ML models.
+
+    Args:
+        poscar: POSCAR format structure string (optional if jid provided)
+        jid: JARVIS-ID to fetch structure (optional if poscar provided)
+        property_name: Property to predict. Options:
+            - "all": All available properties (default)
+            - "formation_energy_peratom"
+            - "bandgap" (or "bandgap_mbj" for MBJ corrected)
+            - "bulk_modulus"
+            - "shear_modulus"
+            - "elastic_tensor"
+            - "exfoliation_energy"
+            - "max_ir_mode"
+            - "max_piezo_coeff"
+            And many more...
+        api_client: API client instance (injected by agent)
+
+    Returns:
+        dict with predicted properties
+
+    Example:
+        >>> alignn_predict(jid="JVASP-1002")
+        >>> alignn_predict(poscar=poscar_string, property_name="bandgap")
+    """
+    try:
+        # If jid provided, fetch the structure first
+        if jid and not poscar:
+            jid_result = query_by_jid(jid, api_client=api_client)
+            if "error" in jid_result:
+                return {
+                    "error": f"Failed to fetch structure for {jid}: {jid_result['error']}"
+                }
+            poscar = jid_result.get("atoms")
+            if not poscar:
+                return {"error": f"No structure found for {jid}"}
+
+        if not poscar:
+            return {"error": "Either poscar or jid must be provided"}
+
+        # Build request
+        params = {
+            "atoms": poscar,
+            "property": property_name,
+        }
+
+        result = api_client.request("alignn_predict", params, method="POST")
+
+        # Parse result
+        if isinstance(result, dict):
+            # Prioritize MBJ bandgap if available
+            if "prediction" in result:
+                predictions = result["prediction"]
+
+                # If bandgap requested, try to get MBJ version
+                if property_name in ["bandgap", "all"]:
+                    if "bandgap_mbj" in predictions:
+                        result["bandgap"] = predictions["bandgap_mbj"]
+                        result["bandgap_type"] = "MBJ (more accurate)"
+                    elif "bandgap" in predictions:
+                        result["bandgap"] = predictions["bandgap"]
+                        result["bandgap_type"] = "standard"
+
+                return {
+                    "status": "success",
+                    "predictions": predictions,
+                    "jid": jid if jid else "custom",
+                    "message": f"ALIGNN predictions completed",
+                }
+            else:
+                return result
+        else:
+            return {
+                "error": "Unexpected response format",
+                "response": str(result),
+            }
+
+    except Exception as e:
+        return {"error": f"ALIGNN prediction error: {str(e)}"}
+
+
+def alignn_predictX(
     poscar: str, *, api_client: AGAPIClient = None
 ) -> Dict[str, Any]:
     """
