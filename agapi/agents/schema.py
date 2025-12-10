@@ -261,23 +261,106 @@ TOOLS_SCHEMA = [
             },
         },
     },
+    # Protein
+    {
+        "type": "function",
+        "function": {
+            "name": "protein_fold",
+            "description": "Predict 3D protein structure from amino acid sequence using ESMFold AI. Input is a sequence of one-letter amino acid codes (e.g., 'MKTA...VSLL'). Returns PDB format structure with atomic coordinates. Works for sequences 10-400 amino acids long. ESMFold is a state-of-the-art AI model that predicts protein structure from sequence alone.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "sequence": {
+                        "type": "string",
+                        "description": "Amino acid sequence using one-letter codes: A (Ala), R (Arg), N (Asn), D (Asp), C (Cys), Q (Gln), E (Glu), G (Gly), H (His), I (Ile), L (Leu), K (Lys), M (Met), F (Phe), P (Pro), S (Ser), T (Thr), W (Trp), Y (Tyr), V (Val). Remove any whitespace or line breaks.",
+                    }
+                },
+                "required": ["sequence"],
+            },
+        },
+    },
+    # XRD
+    {
+        "type": "function",
+        "function": {
+            "name": "generate_xrd_pattern",
+            "description": "Generate powder X-ray diffraction (XRD) pattern from crystal structure. Simulates XRD experiment and returns peak positions (2θ), intensities, and d-spacings. Useful for predicting what XRD pattern a structure would produce, comparing theoretical vs experimental patterns, or generating training data. Returns DiffractGPT-compatible description.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "poscar": {
+                        "type": "string",
+                        "description": "POSCAR format structure string containing lattice vectors, atom positions, and elements",
+                    },
+                    "wavelength": {
+                        "type": "number",
+                        "description": "X-ray wavelength in Angstroms. Common values: 1.54184 (Cu K-alpha, default), 1.54056 (Cu K-alpha1), 0.71073 (Mo K-alpha)",
+                        "default": 1.54184,
+                    },
+                    "num_peaks": {
+                        "type": "integer",
+                        "description": "Number of strongest peaks to report in summary (default: 20)",
+                        "default": 20,
+                    },
+                    "theta_range": {
+                        "type": "array",
+                        "description": "2-theta range in degrees [min, max]. Default: [0, 90]",
+                        "items": {"type": "number"},
+                        "minItems": 2,
+                        "maxItems": 2,
+                    },
+                },
+                "required": ["poscar"],
+            },
+        },
+    },
     # Intermat
     {
         "type": "function",
         "function": {
             "name": "generate_interface",
-            "description": "Generate heterostructure interface",
+            "description": "Generate heterostructure interface between two materials (film on substrate). Creates interface by matching lattice parameters and stacking specified crystal surfaces.",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "film_poscar": {"type": "string"},
-                    "substrate_poscar": {"type": "string"},
+                    "film_poscar": {
+                        "type": "string",
+                        "description": "POSCAR format structure string for the film material (top layer)",
+                    },
+                    "substrate_poscar": {
+                        "type": "string",
+                        "description": "POSCAR format structure string for the substrate material (bottom layer)",
+                    },
                     "film_indices": {
                         "type": "string",
-                        "description": "Miller indices (e.g., '0_0_1')",
+                        "description": "Miller indices for film surface, format: 'h_k_l' with underscores. Common: '0_0_1' (001), '1_1_1' (111), '1_0_0' (100)",
+                        "default": "0_0_1",
                     },
-                    "substrate_indices": {"type": "string"},
-                    "separation": {"type": "number"},
+                    "substrate_indices": {
+                        "type": "string",
+                        "description": "Miller indices for substrate surface, format: 'h_k_l' with underscores",
+                        "default": "0_0_1",
+                    },
+                    "film_thickness": {
+                        "type": "number",
+                        "description": "Film layer thickness in Angstroms. Typical: 10-30 Å",
+                        "default": 16,
+                    },
+                    "substrate_thickness": {
+                        "type": "number",
+                        "description": "Substrate layer thickness in Angstroms. Typical: 10-30 Å",
+                        "default": 16,
+                    },
+                    "separation": {
+                        "type": "number",
+                        "description": "Interface separation distance in Angstroms. Typical: 2.0-3.0 Å",
+                        "default": 2.5,
+                    },
+                    "max_area": {
+                        "type": "number",
+                        "description": "Maximum interface area in Angstroms². Larger values allow more lattice mismatch",
+                        "default": 300,
+                    },
                 },
                 "required": ["film_poscar", "substrate_poscar"],
             },

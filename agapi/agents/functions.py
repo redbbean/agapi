@@ -608,27 +608,97 @@ def generate_interface(
     substrate_poscar: str,
     film_indices: str = "0_0_1",
     substrate_indices: str = "0_0_1",
+    film_thickness: float = 16,
+    substrate_thickness: float = 16,
     separation: float = 2.5,
+    max_area: float = 300,
+    *,
     api_client: AGAPIClient = None,
 ) -> Dict[str, Any]:
-    """Generate heterostructure interface"""
+    """
+    Generate heterostructure interface between two materials.
+
+    Args:
+        film_poscar: POSCAR string for film material
+        substrate_poscar: POSCAR string for substrate material
+        film_indices: Miller indices for film surface (e.g., "0_0_1" for (001))
+        substrate_indices: Miller indices for substrate surface
+        film_thickness: Film layer thickness in Angstroms (default: 16)
+        substrate_thickness: Substrate layer thickness in Angstroms (default: 16)
+        separation: Interface separation distance in Angstroms (default: 2.5)
+        max_area: Maximum interface area in Angstroms² (default: 300)
+        api_client: API client instance (injected by agent)
+
+    Returns:
+        dict with interface structure (POSCAR format)
+    """
     try:
+        import httpx
+
+        # Validate Miller indices format (should be "h_k_l" with underscores)
+        if " " in film_indices or "," in film_indices:
+            film_indices = film_indices.replace(" ", "_").replace(",", "_")
+        if " " in substrate_indices or "," in substrate_indices:
+            substrate_indices = substrate_indices.replace(" ", "_").replace(
+                ",", "_"
+            )
+
+        # Build parameters matching backend API
+        # Backend expects: poscar_film, poscar_subs, subs_indices (not substrate_indices)
         params = {
-            "poscar_film": film_poscar,
-            "poscar_subs": substrate_poscar,
+            "poscar_film": film_poscar,  # Map to backend param
+            "poscar_subs": substrate_poscar,  # Map to backend param
             "film_indices": film_indices,
-            "subs_indices": substrate_indices,
-            "separations": str(separation),
+            "subs_indices": substrate_indices,  # Backend uses subs_indices
+            "film_thickness": film_thickness,
+            "subs_thickness": substrate_thickness,  # Backend uses subs_thickness
+            "separations": str(
+                separation
+            ),  # Backend uses separations (string)
+            "max_area": max_area,
+            "APIKEY": api_client.api_key,
         }
 
-        result = api_client.request("generate_interface", params)
+        # Direct GET request (returns text/plain)
+        response = httpx.get(
+            f"{api_client.api_base}/generate_interface",
+            params=params,
+            timeout=300.0,
+        )
+        response.raise_for_status()
+
+        interface_poscar = response.text
+
+        # Parse basic info from POSCAR
+        lines = interface_poscar.splitlines()
+        elements_line = ""
+        counts_line = ""
+        for i, line in enumerate(lines):
+            if "direct" in line.lower() or "cartesian" in line.lower():
+                if i >= 2:
+                    elements_line = lines[i - 2]
+                    counts_line = lines[i - 1]
+                break
 
         return {
-            "interface_structure": result.get("POSCAR"),
+            "status": "success",
+            "heterostructure_atoms": interface_poscar,
+            "film_indices": film_indices,
+            "substrate_indices": substrate_indices,
+            "film_thickness": film_thickness,
+            "substrate_thickness": substrate_thickness,
             "separation": separation,
+            "elements": elements_line.strip(),
+            "atom_counts": counts_line.strip(),
+            "message": f"Generated interface structure ({film_indices}/{substrate_indices}), {len(lines)} lines",
+        }
+
+    except httpx.HTTPStatusError as e:
+        return {
+            "error": f"API error {e.response.status_code}: {e.response.text}"
         }
     except Exception as e:
-        return {"error": str(e)}
+        return {"error": f"Interface generation error: {str(e)}"}
 
 
 def make_supercell(
@@ -813,3 +883,220 @@ def create_vacancy(
         }
     except Exception as e:
         return {"error": f"Vacancy creation error: {str(e)}"}
+
+
+def protein_fold(
+    sequence: str, *, api_client: AGAPIClient = None
+) -> Dict[str, Any]:
+    """
+    Predict 3D protein structure from amino acid sequence using ESMFold.
+
+    Args:
+        sequence: Amino acid sequence in one-letter codes (A, R, N, D, C, Q, E, G, H, I, L, K, M, F, P, S, T, W, Y, V)
+        api_client: API client instance (injected by agent)
+
+    Returns:
+        dict with PDB structure string
+
+    Example:
+        >>> protein_fold("MKTAYIAKQRQISFVKSHFSRQ...")
+    """
+    try:
+        import httpx
+
+        # Validate sequence
+        valid_amino_acids = set("ARNDCQEGHILKMFPSTWYV")
+        sequence = sequence.upper().strip()
+
+        invalid_chars = set(sequence) - valid_amino_acids
+        if invalid_chars:
+            return {
+                "error": f"Invalid amino acids in sequence: {invalid_chars}. "
+                f"Valid: A,R,N,D,C,Q,E,G,H,I,L,K,M,F,P,S,T,W,Y,V"
+            }
+
+        if len(sequence) < 10:
+            return {"error": "Sequence too short (minimum 10 amino acids)"}
+
+        if len(sequence) > 400:
+            return {
+                "error": f"Sequence too long ({len(sequence)} amino acids). Maximum: 400"
+            }
+
+        # Make request to protein folding endpoint
+        params = {"sequence": sequence}
+
+        response = httpx.get(
+            f"{api_client.api_base}/protein_fold/query",
+            params=params,
+            headers={"Authorization": f"Bearer {api_client.api_key}"},
+            timeout=120.0,  # Protein folding can take a while
+        )
+
+        if response.status_code == 200:
+            pdb_structure = response.text
+
+            # Extract some info from PDB
+            lines = pdb_structure.splitlines()
+            num_atoms = len([l for l in lines if l.startswith("ATOM")])
+            num_residues = len(sequence)
+
+            return {
+                "status": "success",
+                "pdb_structure": pdb_structure,
+                "sequence_length": num_residues,
+                "num_atoms": num_atoms,
+                "message": f"Predicted 3D structure for {num_residues} amino acid protein ({num_atoms} atoms)",
+            }
+        else:
+            return {
+                "error": f"Protein folding failed: {response.status_code}",
+                "detail": response.text,
+            }
+
+    except Exception as e:
+        return {"error": f"Protein folding error: {str(e)}"}
+
+
+def generate_xrd_pattern(
+    poscar: str,
+    wavelength: float = 1.54184,
+    num_peaks: int = 20,
+    theta_range: list = None,
+    *,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Generate powder XRD pattern description from crystal structure.
+
+    Args:
+        poscar: POSCAR format structure string
+        wavelength: X-ray wavelength in Angstroms (default: 1.54184 = Cu K-alpha)
+        num_peaks: Number of top peaks to report (default: 20)
+        theta_range: [min, max] 2-theta range in degrees (default: [0, 90])
+        api_client: API client instance (injected by agent)
+
+    Returns:
+        dict with XRD peak positions, intensities, and DiffractGPT-style description
+
+    Example:
+        >>> generate_xrd_pattern(poscar, wavelength=1.54184, num_peaks=10)
+    """
+    try:
+        from jarvis.io.vasp.inputs import Poscar
+        from jarvis.core.atoms import Atoms
+        from jarvis.analysis.diffraction.xrd import XRD
+        import numpy as np
+        from scipy.signal import find_peaks
+
+        # Parse structure
+        atoms = Poscar.from_string(poscar).atoms
+        formula = atoms.composition.reduced_formula
+
+        # Set theta range
+        if theta_range is None:
+            theta_range = [0, 90]
+
+        # Simulate XRD pattern
+        xrd = XRD(wavelength=wavelength, thetas=theta_range)
+        two_theta, d_spacing, intensity = xrd.simulate(atoms=atoms)
+
+        # Normalize intensity
+        intensity = np.array(intensity)
+        intensity = intensity / np.max(intensity)
+        two_theta = np.array(two_theta)
+
+        # Apply Gaussian broadening for peak detection
+        def gaussian_recast(x_original, y_original, x_new, sigma=0.1):
+            y_new = np.zeros_like(x_new, dtype=np.float64)
+            for x0, amp in zip(x_original, y_original):
+                y_new += amp * np.exp(-0.5 * ((x_new - x0) / sigma) ** 2)
+            return x_new, y_new
+
+        x_new = np.arange(theta_range[0], theta_range[1], 0.1)
+        two_theta_smooth, intensity_smooth = gaussian_recast(
+            two_theta, intensity, x_new, sigma=0.1
+        )
+        intensity_smooth = intensity_smooth / np.max(intensity_smooth)
+
+        # Find peaks
+        peaks, props = find_peaks(
+            intensity_smooth, height=0.01, distance=1, prominence=0.05
+        )
+
+        if len(peaks) == 0:
+            return {
+                "status": "warning",
+                "message": f"No significant XRD peaks found for {formula}",
+                "formula": formula,
+                "wavelength": wavelength,
+                "num_peaks_requested": num_peaks,
+                "num_peaks_found": 0,
+            }
+
+        # Get top N peaks by intensity
+        top_indices = np.argsort(props["peak_heights"])[::-1][:num_peaks]
+        top_peaks = peaks[top_indices]
+        top_peaks_sorted = top_peaks[np.argsort(two_theta_smooth[top_peaks])]
+
+        # Create peak list with 2theta and relative intensity
+        peak_list = [
+            {
+                "two_theta": round(float(two_theta_smooth[p]), 2),
+                "intensity": round(float(intensity_smooth[p]), 2),
+                "d_spacing": round(
+                    float(
+                        wavelength
+                        / (2 * np.sin(np.radians(two_theta_smooth[p] / 2)))
+                    ),
+                    4,
+                ),
+            }
+            for p in top_peaks_sorted
+        ]
+
+        # Build DiffractGPT-style description
+        peak_text = ", ".join(
+            [
+                f"{peak['two_theta']}°({peak['intensity']})"
+                for peak in peak_list
+            ]
+        )
+
+        description = (
+            f"The chemical formula is: {formula}.\n"
+            f"The XRD pattern shows main peaks at: {peak_text}."
+        )
+
+        # Full pattern for plotting/matching
+        full_pattern = [
+            {
+                "two_theta": round(float(tt), 2),
+                "intensity": round(float(ii), 4),
+            }
+            for tt, ii in zip(two_theta_smooth, intensity_smooth)
+        ]
+
+        # Create markdown table for easy display
+        peak_table = "| Rank | 2θ (°) | Intensity | d-spacing (Å) |\n"
+        peak_table += "|------|--------|-----------|---------------|\n"
+        for i, peak in enumerate(peak_list, 1):
+            peak_table += f"| {i:2d}   | {peak['two_theta']:6.2f} | {peak['intensity']:5.2f}     | {peak['d_spacing']:6.4f}      |\n"
+
+        return {
+            "status": "success",
+            "formula": formula,
+            "wavelength": wavelength,
+            "num_peaks_found": len(peaks),
+            "num_peaks_reported": len(peak_list),
+            "peaks": peak_list,
+            "peak_table": peak_table,
+            "description": description,
+            "full_pattern": full_pattern[
+                :1000
+            ],  # Truncate to avoid huge response
+            "message": f"Generated XRD pattern for {formula} with {len(peak_list)} main peaks",
+        }
+
+    except Exception as e:
+        return {"error": f"XRD generation error: {str(e)}"}
