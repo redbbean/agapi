@@ -11,4 +11,4 @@ class AgentConfig:
     DEFAULT_MAX_ITERATIONS = 15
 
     # Network Configuration
-    DEFAULT_TIMEOUT = 30
+    DEFAULT_TIMEOUT = 300

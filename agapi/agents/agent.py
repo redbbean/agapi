@@ -19,6 +19,9 @@ from .functions import (
     diffractgpt_predict,
     xrd_match,
     generate_interface,
+    make_supercell,
+    substitute_atom,
+    create_vacancy,
 )
 
 SYSTEM_PROMPT = """You are a materials science AI assistant with access to computational tools:
@@ -33,6 +36,11 @@ SYSTEM_PROMPT = """You are a materials science AI assistant with access to compu
 - DiffractGPT: Structure from XRD
 - Intermat: Heterostructure interfaces
 
+**STRUCTURE MANIPULATION:**
+- make_supercell: Create supercells (e.g., 2x1x1, 2x2x2)
+- substitute_atom: Replace atoms (e.g., Ga→Al for doping)
+- create_vacancy: Remove atoms to create defects
+
 **BANDGAP REPORTING RULES:**
 - ALWAYS prefer MBJ bandgap (mbj_bandgap) - it's more accurate for semiconductors
 - Only use OptB88vdW bandgap (optb88vdw_bandgap) if MBJ is not available
@@ -40,33 +48,29 @@ SYSTEM_PROMPT = """You are a materials science AI assistant with access to compu
 - For semiconductor queries (C, Si, Ge, GaN, etc.), MBJ values are experimental-quality
 - SlakoNet provides tight-binding bandgap estimates
 
-**SLAKONET BAND STRUCTURE:**
-- Returns: band_gap_eV, vbm_eV, cbm_eV, and image_base64 (PNG plot)
-- Best for small structures (≤10 atoms)
-- When calculating band structure, report all three values and mention that image is available
-
-**AVAILABLE PROPERTIES (80+ properties):**
-*Electronic:* bandgap (prefer mbj_bandgap, fallback optb88vdw_bandgap, hse_gap), spillage
-*Energetic:* formation_energy, total_energy, ehull, exfoliation_energy
-*Mechanical:* bulk_modulus, shear_modulus, elastic_tensor, poisson, density
-*Magnetic:* magmom_oszicar, magmom_outcar
-*Superconducting:* Tc_supercon
-*Dielectric:* epsx, epsy, epsz
-*Transport:* n-Seebeck, p-Seebeck, n-powerfact, p-powerfact
-*Structural:* nat, spg, spg_symbol, spg_number, crys, dimensionality, formula
+**STRUCTURE MANIPULATION WORKFLOWS:**
+When asked to modify structures:
+1. Get POSCAR from database or file
+2. Make supercell if needed (for defects, use at least 2x2x2)
+3. Apply modifications (substitute or vacancy)
+4. Relax with ALIGNN-FF
+5. Predict properties with ALIGNN
+6. Optionally calculate band structure with SlakoNet
 
 **EXAMPLE WORKFLOWS:**
 1. Find material → Get POSCAR → Predict with ALIGNN
-2. Query database → Calculate band structure with SlakoNet → Compare bandgaps
-3. Get structure → SlakoNet band structure → Analyze electronic properties
-4. XRD peaks → Predict structure with DiffractGPT
+2. Get structure → Make supercell → Substitute atom → Relax → Predict
+3. Get structure → Make supercell → Create vacancy → Relax → Calculate band structure
+4. Find two materials → Generate interface → Relax → Predict properties
+5. Query database → Create defect → Optimize → Compare with pristine
 
 **KEY RULES:**
 1. Always report total counts for database queries
 2. For bandgaps, prefer MBJ over OptB88vdW (indicate which is reported)
-3. For predictions, first get POSCAR (via query_by_jid or query_by_formula)
-4. For SlakoNet: Report band gap, VBM, CBM; image will be auto-displayed if enabled
-5. Chain tools logically: query → get structure → predict/plot"""
+3. For defects: Create supercell FIRST, then modify
+4. After structure modification: ALWAYS relax with ALIGNN-FF before predictions
+5. For SlakoNet: Structure must have ≤10 atoms
+6. Chain tools logically: query → supercell → modify → relax → predict → plot"""
 
 
 class AGAPIAgent:
@@ -193,6 +197,7 @@ class AGAPIAgent:
         show_tool_results: bool = False,
         use_tools: bool = True,
         auto_display_images: bool = False,
+        max_context_messages: int = 20,  # NEW: Limit message history
     ) -> Union[str, Dict[str, Any]]:
         """
         Execute query (async)
@@ -204,6 +209,7 @@ class AGAPIAgent:
             show_tool_results: If True, append raw tool results to response
             use_tools: If False, disable tool calling (direct LLM response only)
             auto_display_images: If True, automatically display SlakoNet images
+            max_context_messages: Maximum messages to keep in context (default: 20)
 
         Returns:
             str: Formatted text response (default)
@@ -215,14 +221,14 @@ class AGAPIAgent:
         else:
             system_prompt = """You are a materials science AI assistant with extensive knowledge of materials properties, computational methods, and DFT calculations.
 
-When answering questions about materials properties:
-- Provide answers based on your training knowledge
-- Include typical experimental or computational values when known
-- Mention uncertainty or ranges when appropriate
-- Explain which computational methods (DFT, GW, hybrid functionals) typically give which results
-- For common materials (Si, GaN, SiC, diamond, graphene, etc.), provide well-known literature values
+    When answering questions about materials properties:
+    - Provide answers based on your training knowledge
+    - Include typical experimental or computational values when known
+    - Mention uncertainty or ranges when appropriate
+    - Explain which computational methods (DFT, GW, hybrid functionals) typically give which results
+    - For common materials (Si, GaN, SiC, diamond, graphene, etc.), provide well-known literature values
 
-You do NOT have access to databases or computational tools in this mode - answer only from your extensive training knowledge of materials science."""
+    You do NOT have access to databases or computational tools in this mode - answer only from your extensive training knowledge of materials science."""
 
         messages = [
             {"role": "system", "content": system_prompt},
@@ -235,6 +241,15 @@ You do NOT have access to databases or computational tools in this mode - answer
         for iteration in range(self.max_iterations):
             if verbose:
                 print(f"[Iteration {iteration + 1}/{self.max_iterations}]")
+
+            # 🎯 CRITICAL FIX: Truncate messages if too long
+            if len(messages) > max_context_messages:
+                # Keep system message + last N messages
+                messages = [messages[0]] + messages[
+                    -(max_context_messages - 1) :
+                ]
+                if verbose:
+                    print(f"  [Truncated context to {len(messages)} messages]")
 
             try:
                 # Prepare API call parameters
@@ -284,7 +299,13 @@ You do NOT have access to databases or computational tools in this mode - answer
                                 f"\n[Tool Call {i}] {call['function_name']}\n"
                             )
                             final_response += f"Arguments: {json.dumps(call['arguments'], indent=2)}\n"
-                            final_response += f"Result: {json.dumps(call['result'], indent=2)}\n"
+                            # Truncate large results
+                            result_str = json.dumps(call["result"], indent=2)
+                            if len(result_str) > 1000:
+                                result_str = (
+                                    result_str[:1000] + "\n... (truncated)"
+                                )
+                            final_response += f"Result: {result_str}\n"
                             final_response += "-" * 70 + "\n"
 
                     # Return dict or text
@@ -349,15 +370,71 @@ You do NOT have access to databases or computational tools in this mode - answer
                     if verbose and "error" in result:
                         print(f"  Error: {result['error']}")
 
+                    # 🎯 CRITICAL FIX: Truncate large tool results before adding to messages
+                    result_str = json.dumps(result)
+                    if len(result_str) > 10000:  # Limit to 10K chars
+                        # Keep only essential fields
+                        truncated = {}
+                        for key in [
+                            "status",
+                            "message",
+                            "error",
+                            "formula",
+                            "jid",
+                            "band_gap_eV",
+                            "vbm_eV",
+                            "cbm_eV",
+                            "num_atoms",
+                            "relaxed_poscar",
+                            "modified_poscar",
+                            "supercell_poscar",
+                        ]:
+                            if key in result:
+                                truncated[key] = result[key]
+
+                        # For large POSCARs, truncate to first/last few lines
+                        for key in [
+                            "relaxed_poscar",
+                            "modified_poscar",
+                            "supercell_poscar",
+                        ]:
+                            if (
+                                key in truncated
+                                and len(str(truncated[key])) > 2000
+                            ):
+                                poscar_lines = str(truncated[key]).splitlines()
+                                truncated[key] = "\n".join(
+                                    poscar_lines[:10]
+                                    + ["..."]
+                                    + poscar_lines[-5:]
+                                )
+
+                        result_str = json.dumps(truncated)
+                        if verbose:
+                            print(
+                                f"  [Truncated result from {len(json.dumps(result))} to {len(result_str)} chars]"
+                            )
+
                     messages.append(
                         {
                             "role": "tool",
                             "tool_call_id": tool_call.id,
-                            "content": json.dumps(result),
+                            "content": result_str,
                         }
                     )
 
             except Exception as e:
+                if (
+                    "max_tokens" in str(e).lower()
+                    or "context" in str(e).lower()
+                ):
+                    # Context too long - try to recover
+                    if verbose:
+                        print(f"  [Context length error, reducing history]")
+                    # Drastically reduce context
+                    messages = [messages[0]] + messages[-5:]
+                    continue
+
                 if return_dict:
                     return {"error": str(e)}
                 else:
@@ -386,6 +463,7 @@ You do NOT have access to databases or computational tools in this mode - answer
         show_tool_results: bool = False,
         use_tools: bool = True,
         auto_display_images: bool = False,
+        max_context_messages: int = 20,
     ) -> Union[str, Dict[str, Any]]:
         """
         Execute query (sync) with optional HTML rendering or dict return.
@@ -503,7 +581,6 @@ You do NOT have access to databases or computational tools in this mode - answer
 
             return str(envelope)
 
-        # Run the async query
         try:
             loop = asyncio.get_event_loop()
             if loop.is_running():
@@ -519,6 +596,7 @@ You do NOT have access to databases or computational tools in this mode - answer
                             show_tool_results,
                             use_tools,
                             auto_display_images,
+                            max_context_messages,
                         )
                     )
                 except ImportError:
@@ -534,6 +612,7 @@ You do NOT have access to databases or computational tools in this mode - answer
                         show_tool_results,
                         use_tools,
                         auto_display_images,
+                        max_context_messages,
                     )
                 )
         except RuntimeError:
@@ -545,9 +624,9 @@ You do NOT have access to databases or computational tools in this mode - answer
                     show_tool_results,
                     use_tools,
                     auto_display_images,
+                    max_context_messages,
                 )
             )
-
         # If rendering HTML is requested
         if render_html:
             try:
@@ -613,6 +692,14 @@ You do NOT have access to databases or computational tools in this mode - answer
         self, function_name: str, function_args: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Execute tool function"""
+
+        # 🎯 SANITIZE function name - remove special tokens
+        function_name = function_name.split("<|")[
+            0
+        ]  # Remove <|channel|>, <|endoftext|>, etc.
+        function_name = function_name.split("|>")[0]  # Remove |> suffix
+        function_name = function_name.strip()
+
         function_args["api_client"] = self.agapi_client
 
         functions = {
@@ -627,13 +714,20 @@ You do NOT have access to databases or computational tools in this mode - answer
             "diffractgpt_predict": diffractgpt_predict,
             "xrd_match": xrd_match,
             "generate_interface": generate_interface,
+            "make_supercell": make_supercell,
+            "substitute_atom": substitute_atom,
+            "create_vacancy": create_vacancy,
         }
 
         func = functions.get(function_name)
         if func:
             return func(**function_args)
         else:
-            return {"error": f"Unknown function: {function_name}"}
+            # More helpful error message
+            available = ", ".join(functions.keys())
+            return {
+                "error": f"Unknown function: '{function_name}'. Available: {available}"
+            }
 
 
 # Add these functions at the END of agent.py (after the AGAPIAgent class)

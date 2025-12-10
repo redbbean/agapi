@@ -85,6 +85,86 @@ TOOLS_SCHEMA = [
             },
         },
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "make_supercell",
+            "description": "Create a supercell from a POSCAR structure by replicating the unit cell. Use this to create larger simulation cells for defect studies or interface calculations.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "poscar": {
+                        "type": "string",
+                        "description": "POSCAR format structure string",
+                    },
+                    "scaling_matrix": {
+                        "type": "array",
+                        "items": {"type": "integer"},
+                        "description": "List of 3 integers [nx, ny, nz] for supercell dimensions. Example: [2,1,1] creates 2x1x1 supercell",
+                        "minItems": 3,
+                        "maxItems": 3,
+                    },
+                },
+                "required": ["poscar", "scaling_matrix"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "substitute_atom",
+            "description": "Substitute (replace) atoms in a structure. For example, replace Ga with Al to study doping or alloy formation. Useful for creating substitutional defects or alloy structures.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "poscar": {
+                        "type": "string",
+                        "description": "POSCAR format structure string",
+                    },
+                    "element_from": {
+                        "type": "string",
+                        "description": "Element to replace (e.g., 'Ga', 'Si', 'N')",
+                    },
+                    "element_to": {
+                        "type": "string",
+                        "description": "Element to substitute with (e.g., 'Al', 'Ge', 'P')",
+                    },
+                    "num_substitutions": {
+                        "type": "integer",
+                        "description": "Number of atoms to substitute (default: 1)",
+                        "default": 1,
+                    },
+                },
+                "required": ["poscar", "element_from", "element_to"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "create_vacancy",
+            "description": "Create vacancy defects by removing atoms from a structure. Useful for studying point defects, defect formation energies, or creating porous structures.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "poscar": {
+                        "type": "string",
+                        "description": "POSCAR format structure string",
+                    },
+                    "element": {
+                        "type": "string",
+                        "description": "Element to remove to create vacancy (e.g., 'Ga', 'Si', 'O')",
+                    },
+                    "num_vacancies": {
+                        "type": "integer",
+                        "description": "Number of atoms to remove (default: 1)",
+                        "default": 1,
+                    },
+                },
+                "required": ["poscar", "element"],
+            },
+        },
+    },
     # ALIGNN
     {
         "type": "function",
