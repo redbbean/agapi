@@ -5,11 +5,11 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="agapi",
-    version="2025.11.15",
+    version="2025.12.25",
     author="Kamal Choudhary",
     author_email="kchoudh2@jhu.edu",
     description="agapi",
-    slakonet=[
+    install_requires=[
         "numpy>=1.22.0",
         "scipy>=1.6.3",
         "jarvis-tools>=2021.07.19",
@@ -21,7 +21,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: Apache License",
+        "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.10",

@@ -205,9 +205,12 @@ Watch AGAPI in action on YouTube:
 
 ## 📚 References
 
-1. [Choudhary, K. *et al.*, IMMI. 2025.](https://doi.org/10.1007/s40192-025-00410-9)  
-2. [Choudhary, K. *et al.*, Comput. Mater. Sci. 2025.](https://doi.org/10.1016/j.commatsci.2025.114063)  
-3. [Choudhary, K. *et al.*, J. Phys. Chem. Lett. 2024.](https://doi.org/10.1021/acs.jpclett.4c01126)
+1. [AGAPI-Agents: An Open-Access Agentic AI Platform for Accelerated Materials Design on AtomGPT.org](https://doi.org/10.48550/arXiv.2512.11935)  
+2. [ChatGPT Material Explorer: Design and Implementation of a Custom GPT Assistant for Materials Science Applications](https://doi.org/10.1007/s40192-025-00410-9)  
+3. [The JARVIS infrastructure is all you need for materials design](https://doi.org/10.1016/j.commatsci.2025.114063)  
+4. [AtomGPT: Atomistic Generative Pretrained Transformer for Forward and Inverse Materials Design](https://doi.org/10.1021/acs.jpclett.4c01126)
+
+[Full publication list](https://scholar.google.com/citations?hl=en&user=klhV2BIAAAAJ&view_op=list_works&sortby=pubdate)
 
 ---
 
