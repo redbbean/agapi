@@ -1471,3 +1471,90 @@ def generate_xrd_pattern(
 
     except Exception as e:
         return {"error": f"XRD generation error: {str(e)}"}
+def get_theoretical_capacity(
+    poscar: str, 
+    *,
+    api_client: AGAPIClient = None
+) -> Dict[str, Any]:
+    """
+    Calculate theoretical gravimetric and volumetric capacity for battery materials from POSCAR.
+    
+    Args:
+        poscar: POSCAR format string containing crystal structure
+        api_client: Optional AGAPIClient instance (not used, for API consistency)
+        
+    Returns:
+        dict: Dictionary containing:
+            - volumetric_capacity: Volumetric capacity in mAh/cm³
+            - gravimetric_capacity: Gravimetric capacity in mAh/g
+            - molar_mass: Molar mass in g/mol
+            - density: Density in g/cm³
+            - n_electrons: Number of electrons transferred (estimated from Li content)
+            - formula: Chemical formula
+            
+    Reference:
+        https://www.sciencedirect.com/science/article/pii/S1369702114004118
+        
+    Example:
+        >>> result = get_theoretical_capacity(poscar_string)
+        >>> print(f"Gravimetric: {result['gravimetric_capacity']:.2f} mAh/g")
+        >>> print(f"Volumetric: {result['volumetric_capacity']:.2f} mAh/cm³")
+    """
+    from jarvis.core.atoms import Atoms
+    
+    # Constants
+    FARADAY_CONSTANT = 96485.3329  # C/mol (Coulombs per mole)
+    ANGSTROM3_TO_CM3 = 1e-24  # Conversion factor Å³ to cm³
+    
+    # Parse POSCAR to get Atoms object
+    atoms = Atoms.from_poscar(poscar)
+    
+    # Get composition and calculate molar mass (g/mol)
+    composition = atoms.composition
+    molar_mass = composition.weight
+    
+    # Determine number of electrons transferred from composition
+    # For Li-ion batteries, n_electrons = number of Li atoms per formula unit
+    comp_dict = composition.to_dict()
+    if 'Li' in comp_dict:
+        n_electrons = int(comp_dict['Li'])
+    else:
+        # For non-Li materials, default to 1 (e.g., Na-ion, Mg-ion)
+        # Could be extended to check for Na, K, Mg, Ca, etc.
+        n_electrons = 1
+    
+    # Get unit cell volume (Å³)
+    volume_angstrom3 = atoms.volume
+    
+    # Calculate number of formula units in the cell
+    total_atoms = sum(comp_dict.values())
+    gcd_value = composition.num_atoms / total_atoms
+    
+    # Calculate mass per unit cell (g)
+    mass_per_cell = molar_mass * gcd_value * 1.66054e-24  # amu to grams
+    
+    # Calculate density (g/cm³)
+    volume_cm3 = volume_angstrom3 * ANGSTROM3_TO_CM3
+    density = mass_per_cell / volume_cm3
+    
+    # Calculate gravimetric capacity (mAh/g)
+    # Capacity = (n × F) / (M × 3.6)
+    gravimetric_capacity = (n_electrons * FARADAY_CONSTANT) / (molar_mass * 3.6)
+    
+    # Calculate volumetric capacity (mAh/cm³)
+    volumetric_capacity = gravimetric_capacity * density
+    
+    return {
+        "volumetric_capacity": round(volumetric_capacity, 2),
+        "gravimetric_capacity": round(gravimetric_capacity, 2),
+        "molar_mass": round(molar_mass, 2),
+        "density": round(density, 2),
+        "n_electrons": n_electrons,
+        "formula": atoms.composition.reduced_formula,
+        "units": {
+            "volumetric_capacity": "mAh/cm³",
+            "gravimetric_capacity": "mAh/g",
+            "molar_mass": "g/mol",
+            "density": "g/cm³"
+        }
+    }
