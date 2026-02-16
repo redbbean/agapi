@@ -5,7 +5,8 @@ import asyncio
 from openai import AsyncOpenAI
 
 from .config import AgentConfig
-from .client import AGAPIClient
+#from .client import AGAPIClient
+from agapi import Agapi  
 from .schema import TOOLS_SCHEMA
 from .functions import (
     query_by_formula,
@@ -341,8 +342,9 @@ class AGAPIAgent:
         self.api_base = api_base or AgentConfig.API_BASE
         self.system_prompt = system_prompt or SYSTEM_PROMPT
 
-        self.agapi_client = AGAPIClient(
-            api_key=self.api_key, timeout=self.timeout, api_base=self.api_base
+        self.agapi_client = Agapi(
+        #self.agapi_client = AGAPIClient(
+            api_key=self.api_key, timeout=self.timeout, base_url=self.api_base
         )
         self.openai_client = AsyncOpenAI(
             base_url=f"{self.api_base}/api", api_key=self.api_key

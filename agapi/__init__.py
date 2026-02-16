@@ -1,9 +1,24 @@
-"""Version number."""
-
-__version__ = "2025.12.25"
-
+"""AGAPI - Python client for AtomGPT.org API"""
 import os
+from .client import (
+    Agapi,
+    AgapiError,
+    AgapiAuthError,
+    AgapiValidationError,
+    AgapiTimeoutError,
+    AgapiServerError,
+    __version__,
+)
 
+__all__ = [
+    "Agapi",
+    "AgapiError",
+    "AgapiAuthError",
+    "AgapiValidationError",
+    "AgapiTimeoutError",
+    "AgapiServerError",
+    "__version__",
+]
 
 def test(*args):
     """Run pytest in the base of jarvis."""
