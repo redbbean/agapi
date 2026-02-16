@@ -36,7 +36,7 @@ jobs:
         coverage run -m pytest
         coverage report -m -i
         codecov
-        codecov --token="b61081a0-39de-44a8-8a9c-97d4be82af6d"
+        codecov --token="ddace04e-a476-4acd-9e74-1a96bde123b8"
 
         #- name: Upload coverage
         #uses: codecov/codecov-action@v3
