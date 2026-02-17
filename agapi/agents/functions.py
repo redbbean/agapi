@@ -1,6 +1,7 @@
 import json
 from typing import Optional, Dict, Any
-
+import base64
+from pathlib import Path
 from .client import AGAPIClient
 from .aliases import normalize_property_name
 
@@ -320,516 +321,7 @@ def alignn_predict(
         return {"error": f"ALIGNN prediction failed: {str(e)}"}
 
 
-def alignn_predictX(
-    poscar: str, jid: Optional[str] = None, api_client: AGAPIClient = None
-) -> Dict[str, Any]:
-    """Predict material properties using ALIGNN"""
-    try:
-        params = {"poscar": poscar} if not jid else {"jid": jid}
-        result = api_client.request("alignn/query", params)
-
-        return {
-            "formation_energy": result.get(
-                "jv_formation_energy_peratom_alignn"
-            ),
-            "energy_eV": result.get("jv_optb88vdw_total_energy_alignn"),
-            "bandgap_optb88vdw": result.get("jv_optb88vdw_bandgap_alignn"),
-            "bandgap_mbj": result.get("jv_mbj_bandgap_alignn"),
-            "bulk_modulus": result.get("jv_bulk_modulus_kv_alignn"),
-            "shear_modulus": result.get("jv_shear_modulus_gv_alignn"),
-            "piezo_max_dielectric": result.get(
-                "jv_dfpt_piezo_max_dielectric_alignn"
-            ),
-            "Tc_supercon": result.get("jv_supercon_tc_alignn"),
-        }
-    except Exception as e:
-        return {"error": str(e)}
-
-
-def alignn_ff_relaxX(
-    poscar: str,
-    fmax: float = 0.05,
-    steps: int = 150,
-    api_client: AGAPIClient = None,
-) -> Dict[str, Any]:
-    """
-    Relax structure using ALIGNN force field via GET endpoint.
-    """
-    try:
-        params = {
-            "poscar": poscar,
-            "fmax": fmax,
-            "steps": steps,
-        }
-
-        response = httpx.get(
-            f"{api_client.api_base}/alignn_ff/relax",
-            params=params,
-            headers={"Authorization": f"Bearer {api_client.api_key}"},
-            timeout=api_client.timeout,
-        )
-
-        if response.status_code == 200:
-            relaxed_poscar = response.text
-
-            return {
-                "status": "success",
-                "relaxed_poscar": relaxed_poscar,
-                "message": f"Structure relaxed with ALIGNN-FF (fmax={fmax}, steps={steps})",
-            }
-        else:
-            return {
-                "error": f"ALIGNN-FF relaxation failed: {response.status_code}",
-                "detail": response.text,
-            }
-
-    except Exception as e:
-        return {"error": f"ALIGNN-FF relaxation error: {str(e)}"}
-
-
-def alignn_ff_relaxX(poscar: str, api_client: AGAPIClient) -> Dict[str, Any]:
-    """Relax structure using ALIGNN force field"""
-    try:
-        params = {"poscar": poscar}
-        result = api_client.request("alignn_ff/query", params)
-
-        return {
-            "relaxed_structure": result.get("POSCAR"),
-            "energy_eV": result.get("energy_eV"),
-        }
-    except Exception as e:
-        return {"error": str(e)}
-
-
 # SlakoNet Tools
-def slakonet_bandstructureX(
-    poscar: str,
-    energy_range_min: float = -8.0,
-    energy_range_max: float = 8.0,
-    api_client: AGAPIClient = None,
-) -> Dict[str, Any]:
-    """
-    Calculate electronic band structure using SlakoNet.
-    Returns both band structure image and electronic properties.
-    """
-    try:
-        import httpx
-        import base64
-
-        # Prepare request
-        data = {
-            "poscar_string": poscar,
-            "energy_range_min": energy_range_min,
-            "energy_range_max": energy_range_max,
-            "model_path": "/path/to/slakonet_v0/slakonet_v0.pt",  # Default path
-        }
-
-        # Make request with httpx to get full response
-        response = httpx.post(
-            f"{api_client.api_base}/slakonet/bandstructure",
-            data=data,
-            headers={"Authorization": f"Bearer {api_client.api_key}"},
-            timeout=api_client.timeout,
-        )
-
-        if response.status_code == 200:
-            # Extract properties from headers
-            band_gap = response.headers.get("X-Band-Gap", "N/A")
-            vbm = response.headers.get("X-VBM", "N/A")
-            cbm = response.headers.get("X-CBM", "N/A")
-
-            # Get image data
-            image_data = response.content
-            image_base64 = base64.b64encode(image_data).decode("utf-8")
-
-            # Get filename from Content-Disposition
-            content_disp = response.headers.get("Content-Disposition", "")
-            filename = "bandstructure.png"
-            if "filename=" in content_disp:
-                filename = content_disp.split("filename=")[1].strip()
-
-            return {
-                "status": "success",
-                "band_gap_eV": band_gap,
-                "vbm_eV": vbm,
-                "cbm_eV": cbm,
-                "image_base64": image_base64,
-                "image_filename": filename,
-                "message": f"Band structure calculated. Band gap: {band_gap} eV, VBM: {vbm} eV, CBM: {cbm} eV",
-            }
-        else:
-            return {
-                "error": f"SlakoNet request failed: {response.status_code}",
-                "detail": response.text,
-            }
-
-    except Exception as e:
-        return {"error": f"SlakoNet error: {str(e)}"}
-
-
-def slakonet_bandstructureX(
-    poscar: str = None, jid: str = None, api_client: AGAPIClient = None
-) -> Dict[str, Any]:
-    """Calculate band structure using SlakoNet"""
-    try:
-        params = {"jid": jid} if jid else {"poscar": poscar}
-        result = api_client.request("slakonet/bandstructure", params)
-
-        return {
-            "band_gap_eV": result.get("band_gap_eV"),
-            "vbm_eV": result.get("vbm_eV"),
-            "cbm_eV": result.get("cbm_eV"),
-            "note": "Band structure calculated",
-        }
-    except Exception as e:
-        return {"error": str(e)}
-
-
-def alignn_predictX(
-    poscar: str = None,
-    jid: str = None,
-    property_name: str = "all",
-    *,
-    api_client: AGAPIClient = None,
-) -> Dict[str, Any]:
-    """
-    Predict material properties using ALIGNN ML models.
-
-    Args:
-        poscar: POSCAR format structure string (optional if jid provided)
-        jid: JARVIS-ID to use directly (optional if poscar provided)
-        property_name: Property to predict (default: "all")
-        api_client: API client instance
-
-    Returns:
-        dict with predicted properties
-    """
-    try:
-        # Build params - backend accepts either poscar or jid
-        if jid:
-            params = {"jid": jid}
-        elif poscar:
-            params = {"poscar": poscar}
-        else:
-            return {"error": "Either poscar or jid must be provided"}
-
-        # Call ALIGNN API endpoint
-        result = api_client.request("alignn/query", params, method="POST")
-
-        if not result or (isinstance(result, dict) and "error" in result):
-            return {
-                "error": f"ALIGNN prediction failed: {result.get('error', 'Unknown error')}"
-            }
-
-        # Parse and structure the response
-        predictions = {}
-
-        # Formation energy
-        if "jv_formation_energy_peratom_alignn" in result:
-            predictions["formation_energy_peratom"] = result[
-                "jv_formation_energy_peratom_alignn"
-            ]
-
-        # Total energy
-        if "jv_optb88vdw_total_energy_alignn" in result:
-            predictions["total_energy"] = result[
-                "jv_optb88vdw_total_energy_alignn"
-            ]
-
-        # Bandgaps (prioritize MBJ)
-        if "jv_mbj_bandgap_alignn" in result:
-            predictions["bandgap"] = result["jv_mbj_bandgap_alignn"]
-            predictions["bandgap_type"] = "MBJ (more accurate)"
-        elif "jv_optb88vdw_bandgap_alignn" in result:
-            predictions["bandgap"] = result["jv_optb88vdw_bandgap_alignn"]
-            predictions["bandgap_type"] = "OptB88vdW"
-
-        # Elastic properties
-        if "jv_bulk_modulus_kv_alignn" in result:
-            predictions["bulk_modulus_kv"] = result[
-                "jv_bulk_modulus_kv_alignn"
-            ]
-        if "jv_shear_modulus_gv_alignn" in result:
-            predictions["shear_modulus_gv"] = result[
-                "jv_shear_modulus_gv_alignn"
-            ]
-
-        # Piezoelectric
-        if "jv_dfpt_piezo_max_dielectric_alignn" in result:
-            predictions["max_piezo_dielectric"] = result[
-                "jv_dfpt_piezo_max_dielectric_alignn"
-            ]
-
-        # Superconductivity
-        if "jv_supercon_tc_alignn" in result:
-            predictions["supercon_tc"] = result["jv_supercon_tc_alignn"]
-
-        # Exfoliation energy
-        if "jv_exfoliation_energy_alignn" in result:
-            predictions["exfoliation_energy"] = result[
-                "jv_exfoliation_energy_alignn"
-            ]
-
-        return {
-            "status": "success",
-            "predictions": predictions,
-            "jid": jid if jid else "custom_structure",
-            "raw_result": result,  # Include full result for debugging
-            "message": f"ALIGNN predictions completed ({len(predictions)} properties)",
-        }
-
-    except Exception as e:
-        return {"error": f"ALIGNN prediction error: {str(e)}"}
-
-
-def alignn_predictX(
-    poscar: str, *, api_client: AGAPIClient = None
-) -> Dict[str, Any]:
-    """
-    Predict properties using ALIGNN ML models.
-
-    Args:
-        poscar: POSCAR format structure string
-        api_client: API client instance (injected by agent)
-    """
-    try:
-        # Parse POSCAR
-        from jarvis.io.vasp.inputs import Poscar
-
-        atoms = Poscar.from_string(poscar).atoms
-
-        if atoms.num_atoms > 50:
-            return {
-                "error": f"Structure too large ({atoms.num_atoms} atoms). Max: 50"
-            }
-
-        # Make request
-        params = {"poscar": poscar}
-        result = api_client.request("alignn/query", params)
-
-        return {
-            "status": "success",
-            "predictions": result,
-            "num_atoms": atoms.num_atoms,
-            "formula": atoms.composition.reduced_formula,
-        }
-    except Exception as e:
-        return {"error": f"ALIGNN prediction error: {str(e)}"}
-
-
-def alignn_predictX(
-    poscar: str = None,
-    jid: str = None,
-    property_name: str = "all",
-    *,
-    api_client: AGAPIClient = None,
-) -> Dict[str, Any]:
-    """
-    Predict material properties using ALIGNN ML models.
-
-    Args:
-        poscar: POSCAR format structure string (optional if jid provided)
-        jid: JARVIS-ID to use directly (optional if poscar provided)
-        property_name: Property to predict (default: "all")
-        api_client: API client instance
-
-    Returns:
-        dict with predicted properties
-    """
-    try:
-        # Build params - backend accepts either poscar or jid
-        if jid:
-            params = {"jid": jid}
-        elif poscar:
-            params = {"poscar": poscar}
-        else:
-            return {"error": "Either poscar or jid must be provided"}
-
-        # Call ALIGNN API endpoint
-        result = api_client.request("alignn/query", params, method="POST")
-        print("resut", result)
-        if not result or (isinstance(result, dict) and "error" in result):
-            return {
-                "error": f"ALIGNN prediction failed: {result.get('error', 'Unknown error')}"
-            }
-
-        # Parse and structure the response
-        predictions = {}
-
-        # Formation energy
-        if "jv_formation_energy_peratom_alignn" in result:
-            predictions["formation_energy_peratom"] = result[
-                "jv_formation_energy_peratom_alignn"
-            ]
-
-        # Total energy
-        if "jv_optb88vdw_total_energy_alignn" in result:
-            predictions["total_energy"] = result[
-                "jv_optb88vdw_total_energy_alignn"
-            ]
-
-        # Bandgaps (prioritize MBJ)
-        if "jv_mbj_bandgap_alignn" in result:
-            predictions["bandgap"] = result["jv_mbj_bandgap_alignn"]
-            predictions["bandgap_type"] = "MBJ (more accurate)"
-        elif "jv_optb88vdw_bandgap_alignn" in result:
-            predictions["bandgap"] = result["jv_optb88vdw_bandgap_alignn"]
-            predictions["bandgap_type"] = "OptB88vdW"
-
-        # Elastic properties
-        if "jv_bulk_modulus_kv_alignn" in result:
-            predictions["bulk_modulus_kv"] = result[
-                "jv_bulk_modulus_kv_alignn"
-            ]
-        if "jv_shear_modulus_gv_alignn" in result:
-            predictions["shear_modulus_gv"] = result[
-                "jv_shear_modulus_gv_alignn"
-            ]
-
-        # Piezoelectric
-        if "jv_dfpt_piezo_max_dielectric_alignn" in result:
-            predictions["max_piezo_dielectric"] = result[
-                "jv_dfpt_piezo_max_dielectric_alignn"
-            ]
-
-        # Superconductivity
-        if "jv_supercon_tc_alignn" in result:
-            predictions["supercon_tc"] = result["jv_supercon_tc_alignn"]
-
-        return {
-            "status": "success",
-            "predictions": predictions,
-            "jid": jid if jid else "custom_structure",
-            "raw_result": result,  # Include full result for debugging
-            "message": f"ALIGNN predictions completed ({len(predictions)} properties)",
-        }
-
-    except Exception as e:
-        return {"error": f"ALIGNN prediction error: {str(e)}"}
-
-
-def alignn_predictX(
-    poscar: str = None,
-    jid: str = None,
-    property_name: str = "all",
-    *,
-    api_client: AGAPIClient = None,
-) -> Dict[str, Any]:
-    """
-    Predict material properties using ALIGNN ML models.
-
-    Args:
-        poscar: POSCAR format structure string (optional if jid provided)
-        jid: JARVIS-ID to fetch structure (optional if poscar provided)
-        property_name: Property to predict. Options:
-            - "all": All available properties (default)
-            - "formation_energy_peratom"
-            - "bandgap" (or "bandgap_mbj" for MBJ corrected)
-            - "bulk_modulus"
-            - "shear_modulus"
-            - "elastic_tensor"
-            - "exfoliation_energy"
-            - "max_ir_mode"
-            - "max_piezo_coeff"
-            And many more...
-        api_client: API client instance (injected by agent)
-
-    Returns:
-        dict with predicted properties
-
-    Example:
-        >>> alignn_predict(jid="JVASP-1002")
-        >>> alignn_predict(poscar=poscar_string, property_name="bandgap")
-    """
-    try:
-        # If jid provided, fetch the structure first
-        if jid and not poscar:
-            jid_result = query_by_jid(jid, api_client=api_client)
-            if "error" in jid_result:
-                return {
-                    "error": f"Failed to fetch structure for {jid}: {jid_result['error']}"
-                }
-            poscar = jid_result.get("atoms")
-            if not poscar:
-                return {"error": f"No structure found for {jid}"}
-
-        if not poscar:
-            return {"error": "Either poscar or jid must be provided"}
-
-        # Build request
-        params = {
-            "atoms": poscar,
-            "property": property_name,
-        }
-
-        result = api_client.request("alignn_predict", params, method="POST")
-
-        # Parse result
-        if isinstance(result, dict):
-            # Prioritize MBJ bandgap if available
-            if "prediction" in result:
-                predictions = result["prediction"]
-
-                # If bandgap requested, try to get MBJ version
-                if property_name in ["bandgap", "all"]:
-                    if "bandgap_mbj" in predictions:
-                        result["bandgap"] = predictions["bandgap_mbj"]
-                        result["bandgap_type"] = "MBJ (more accurate)"
-                    elif "bandgap" in predictions:
-                        result["bandgap"] = predictions["bandgap"]
-                        result["bandgap_type"] = "standard"
-
-                return {
-                    "status": "success",
-                    "predictions": predictions,
-                    "jid": jid if jid else "custom",
-                    "message": f"ALIGNN predictions completed",
-                }
-            else:
-                return result
-        else:
-            return {
-                "error": "Unexpected response format",
-                "response": str(result),
-            }
-
-    except Exception as e:
-        return {"error": f"ALIGNN prediction error: {str(e)}"}
-
-
-def alignn_predictX(
-    poscar: str, *, api_client: AGAPIClient = None
-) -> Dict[str, Any]:
-    """
-    Predict properties using ALIGNN ML models.
-
-    Args:
-        poscar: POSCAR format structure string
-        api_client: API client instance (injected by agent)
-    """
-    try:
-        # Parse POSCAR
-        from jarvis.io.vasp.inputs import Poscar
-
-        atoms = Poscar.from_string(poscar).atoms
-
-        if atoms.num_atoms > 50:
-            return {
-                "error": f"Structure too large ({atoms.num_atoms} atoms). Max: 50"
-            }
-
-        # Make request
-        params = {"poscar": poscar}
-        result = api_client.request("alignn/query", params)
-
-        return {
-            "status": "success",
-            "predictions": result,
-            "num_atoms": atoms.num_atoms,
-            "formula": atoms.composition.reduced_formula,
-        }
-    except Exception as e:
-        return {"error": f"ALIGNN prediction error: {str(e)}"}
 
 
 def alignn_ff_relax(
@@ -1471,3 +963,571 @@ def generate_xrd_pattern(
 
     except Exception as e:
         return {"error": f"XRD generation error: {str(e)}"}
+
+
+# ---------------------------------------------------------------------------
+# ALIGNN-FF: single-point energy / forces (no relaxation)
+# ---------------------------------------------------------------------------
+
+
+def alignn_ff_single_point(
+    poscar: str,
+    *,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Evaluate energy, forces, and stress for a structure using ALIGNN-FF
+    without relaxing it.
+
+    Endpoint: GET /alignn_ff/query
+    Atom limit: 50 (server-enforced)
+
+    Args:
+        poscar: POSCAR format structure string
+        api_client: API client instance
+
+    Returns:
+        dict with natoms, energy_eV, forces_eV_per_A, stress
+    """
+    try:
+        params = {"poscar": poscar.replace("\n", "\\n")}
+        result = api_client.request("alignn_ff/query", params)
+        if isinstance(result, dict) and "error" in result:
+            return result
+        return {
+            "status": "success",
+            "natoms": result.get("natoms"),
+            "energy_eV": result.get("energy_eV"),
+            "forces_eV_per_A": result.get("forces_eV_per_A"),
+            "stress": result.get("stress"),
+        }
+    except Exception as e:
+        return {"error": f"ALIGNN-FF single point error: {str(e)}"}
+
+
+# ---------------------------------------------------------------------------
+# ALIGNN-FF: geometry optimization with full trajectory
+# ---------------------------------------------------------------------------
+
+
+def alignn_ff_optimize(
+    poscar: str,
+    fmax: float = 0.05,
+    steps: int = 200,
+    optimizer: str = "FIRE",
+    relax_cell: bool = True,
+    *,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Relax a crystal structure using ALIGNN force field with full trajectory.
+
+    Endpoint: POST /alignn_ff/optimize
+    Atom limit: 100 (server-enforced)
+
+    Args:
+        poscar: POSCAR format structure string
+        fmax: Force convergence criterion in eV/Å (default 0.05)
+        steps: Maximum optimization steps (default 200)
+        optimizer: "FIRE", "BFGS", or "LBFGS" (default "FIRE")
+        relax_cell: Whether to also relax cell vectors (default True)
+        api_client: API client instance
+
+    Returns:
+        dict with converged flag, final_poscar, trajectory, energies,
+        initial_energy, final_energy, energy_change, steps_taken
+    """
+    try:
+        import httpx
+
+        data = {
+            "poscar": poscar,
+            "fmax": fmax,
+            "steps": steps,
+            "optimizer": optimizer,
+            "relax_cell": relax_cell,
+        }
+
+        response = httpx.post(
+            f"{api_client.api_base}/alignn_ff/optimize",
+            data=data,
+            headers={"Authorization": f"Bearer {api_client.api_key}"},
+            timeout=api_client.timeout,
+        )
+        response.raise_for_status()
+        result = response.json()
+
+        return {
+            "status": "success",
+            "converged": result.get("converged"),
+            "final_poscar": result.get("final_poscar"),
+            "initial_energy": result.get("initial_energy"),
+            "final_energy": result.get("final_energy"),
+            "energy_change": result.get("energy_change"),
+            "steps_taken": result.get("steps_taken"),
+            "energies": result.get("energies", []),
+            "forces_max": result.get("forces_max", []),
+            "trajectory": result.get("trajectory", []),
+            "formula": result.get("formula"),
+            "num_atoms": result.get("num_atoms"),
+            "computation_time": result.get("computation_time"),
+        }
+
+    except Exception as e:
+        return {"error": f"ALIGNN-FF optimize error: {str(e)}"}
+
+
+# ---------------------------------------------------------------------------
+# ALIGNN-FF: molecular dynamics (NVE)
+# ---------------------------------------------------------------------------
+
+
+def alignn_ff_md(
+    poscar: str,
+    temperature: float = 300.0,
+    timestep: float = 0.5,
+    steps: int = 50,
+    interval: int = 5,
+    *,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Run NVE molecular dynamics using ALIGNN force field.
+
+    Endpoint: POST /alignn_ff/md
+    Atom limit: 50 (server-enforced)
+
+    Args:
+        poscar: POSCAR format structure string
+        temperature: Initial temperature in Kelvin (default 300)
+        timestep: MD timestep in femtoseconds (default 0.5)
+        steps: Number of MD steps (default 50)
+        interval: Frame save interval in steps (default 5)
+        api_client: API client instance
+
+    Returns:
+        dict with trajectory frames, energy vs time, temperature vs time
+    """
+    try:
+        import httpx
+
+        data = {
+            "poscar": poscar,
+            "temperature": temperature,
+            "timestep": timestep,
+            "steps": steps,
+            "interval": interval,
+        }
+
+        response = httpx.post(
+            f"{api_client.api_base}/alignn_ff/md",
+            data=data,
+            headers={"Authorization": f"Bearer {api_client.api_key}"},
+            timeout=api_client.timeout,
+        )
+        response.raise_for_status()
+        result = response.json()
+
+        return {
+            "status": "success",
+            "formula": result.get("formula"),
+            "num_atoms": result.get("num_atoms"),
+            "steps_completed": result.get("steps_completed"),
+            "average_temperature": result.get("average_temperature"),
+            "final_temperature": result.get("final_temperature"),
+            "energies": result.get("energies", {}),
+            "temperatures": result.get("temperatures", []),
+            "trajectory": result.get("trajectory", []),
+            "computation_time": result.get("computation_time"),
+        }
+
+    except Exception as e:
+        return {"error": f"ALIGNN-FF MD error: {str(e)}"}
+
+
+# ---------------------------------------------------------------------------
+# PXRD: match experimental pattern against JARVIS-DFT
+# ---------------------------------------------------------------------------
+
+
+def pxrd_match(
+    query: str,
+    pattern_data: str,
+    wavelength: float = 1.54184,
+    *,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Match an experimental powder XRD pattern against the JARVIS-DFT database
+    by cosine similarity.
+
+    Endpoint: GET /pxrd/query
+
+    Args:
+        query: Chemical formula or element string (e.g. "LaB6", "Si")
+        pattern_data: Two-column data as string: "2theta intensity\\n..."
+                      One pair per line, space-separated
+        wavelength: X-ray wavelength in Å (default 1.54184 = Cu Kα)
+        api_client: API client instance
+
+    Returns:
+        dict with best-match POSCAR and similarity score
+
+    Example:
+        pattern = "21.38 0.69\\n30.42 1.0\\n37.44 0.31"
+        result = pxrd_match("LaB6", pattern, api_client=client)
+    """
+    try:
+        # Build the multiline pattern string the endpoint expects:
+        # Line 1: query;wavelength
+        # Lines 2+: 2theta intensity
+        full_pattern = f"{query};{wavelength}\n{pattern_data}"
+
+        params = {"pattern": full_pattern}
+        result = api_client.request("pxrd/query", params)
+
+        if isinstance(result, str):
+            # Endpoint returns plain-text POSCAR on success
+            return {
+                "status": "success",
+                "matched_poscar": result,
+                "query": query,
+            }
+        if isinstance(result, dict):
+            return result
+
+        return {"error": "Unexpected response format from pxrd/query"}
+
+    except Exception as e:
+        return {"error": f"PXRD match error: {str(e)}"}
+
+
+# ---------------------------------------------------------------------------
+# XRD: full analysis (pattern matching + optional DiffractGPT)
+# ---------------------------------------------------------------------------
+
+
+def xrd_analyze(
+    formula: str,
+    xrd_data: str,
+    wavelength: float = 1.54184,
+    method: str = "pattern_matching",
+    *,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Analyze an experimental XRD pattern using pattern matching and/or
+    DiffractGPT against JARVIS-DFT.
+
+    Endpoint: GET /xrd/analyze
+
+    Args:
+        formula: Chemical formula (e.g. "LaB6", "Si,Ge")
+        xrd_data: Two-column XRD data as string: "2theta intensity\\n..."
+        wavelength: X-ray wavelength in Å (default 1.54184)
+        method: "pattern_matching", "diffractgpt", or "both"
+        api_client: API client instance
+
+    Returns:
+        dict with best match, top-5 matches, similarity score, and
+        optional DiffractGPT predicted structure
+    """
+    try:
+        params = {
+            "formula": formula,
+            "xrd_data": xrd_data.replace("\n", "\\n"),
+            "wavelength": wavelength,
+            "method": method,
+        }
+        result = api_client.request("xrd/analyze", params)
+        return result
+
+    except Exception as e:
+        return {"error": f"XRD analyze error: {str(e)}"}
+
+
+# ---------------------------------------------------------------------------
+# MicroscopyGPT: analyze a microscopy image
+# ---------------------------------------------------------------------------
+
+
+def microscopygpt_analyze(
+    image_path: str,
+    formula: str,
+    *,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Analyze a microscopy image (STEM/TEM/SEM) using MicroscopyGPT to
+    predict crystal structure, defects, or elemental composition.
+
+    Endpoint: POST /microscopy/predict
+
+    Args:
+        image_path: Local path to the image file (PNG, JPG, TIFF)
+        formula: Chemical formula hint (e.g. "MoS2", "GaN")
+        api_client: API client instance
+
+    Returns:
+        dict with predicted structure, confidence, and any defect info
+    """
+    try:
+        import httpx
+
+        image_path = Path(image_path)
+        if not image_path.exists():
+            return {"error": f"Image file not found: {image_path}"}
+
+        with open(image_path, "rb") as f:
+            image_bytes = f.read()
+
+        suffix = image_path.suffix.lower()
+        mime_map = {
+            ".png": "image/png",
+            ".jpg": "image/jpeg",
+            ".jpeg": "image/jpeg",
+            ".tiff": "image/tiff",
+            ".tif": "image/tiff",
+        }
+        mime_type = mime_map.get(suffix, "image/png")
+
+        files = {"image": (image_path.name, image_bytes, mime_type)}
+        data = {"formula": formula}
+
+        response = httpx.post(
+            f"{api_client.api_base}/microscopy/predict",
+            files=files,
+            data=data,
+            headers={"Authorization": f"Bearer {api_client.api_key}"},
+            timeout=300.0,
+        )
+        response.raise_for_status()
+        return response.json()
+
+    except Exception as e:
+        return {"error": f"MicroscopyGPT error: {str(e)}"}
+
+
+# ---------------------------------------------------------------------------
+# Materials Project: query via OPTIMADE
+# ---------------------------------------------------------------------------
+
+
+def query_mp(
+    formula: str,
+    limit: int = 10,
+    *,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Fetch crystal structures from the Materials Project via the OPTIMADE API.
+
+    Endpoint: GET /mp/query
+
+    Args:
+        formula: Reduced chemical formula (e.g. "MoS2", "Al2O3")
+        limit: Max results to return (default 10, max 500)
+        api_client: API client instance
+
+    Returns:
+        dict with total count and list of materials with POSCAR and energies
+    """
+    try:
+        params = {"formula": formula, "page_limit": min(limit, 500)}
+        result = api_client.request("mp/query", params)
+        return result
+
+    except Exception as e:
+        return {"error": f"Materials Project query error: {str(e)}"}
+
+
+# ---------------------------------------------------------------------------
+# OQMD: query via OPTIMADE
+# ---------------------------------------------------------------------------
+
+
+def query_oqmd(
+    formula: str,
+    limit: int = 10,
+    *,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Fetch crystal structures from the OQMD (Open Quantum Materials Database)
+    via the OPTIMADE API.
+
+    Endpoint: GET /oqmd/query
+
+    Args:
+        formula: Reduced chemical formula (e.g. "MoS2", "Fe2O3")
+        limit: Max results to return (default 10, max 500)
+        api_client: API client instance
+
+    Returns:
+        dict with total count and list of materials with POSCAR
+    """
+    try:
+        params = {"formula": formula, "page_limit": min(limit, 500)}
+        result = api_client.request("oqmd/query", params)
+        return result
+
+    except Exception as e:
+        return {"error": f"OQMD query error: {str(e)}"}
+
+
+# ---------------------------------------------------------------------------
+# ArXiv literature search
+# ---------------------------------------------------------------------------
+
+
+def search_arxiv(
+    query: str,
+    max_results: int = 10,
+    *,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Search arXiv preprints for materials science literature.
+
+    Endpoint: GET /arxiv
+
+    Args:
+        query: Search string (e.g. "GaN bandgap DFT", "ALIGNN neural network")
+        max_results: Number of results (default 10, max 100)
+        api_client: API client instance
+
+    Returns:
+        dict with count and list of papers with title, authors, summary, date
+    """
+    try:
+        params = {
+            "query": query,
+            "max_results": min(max_results, 100),
+        }
+        result = api_client.request("arxiv", params)
+        return result
+
+    except Exception as e:
+        return {"error": f"ArXiv search error: {str(e)}"}
+
+
+# ---------------------------------------------------------------------------
+# Crossref literature search
+# ---------------------------------------------------------------------------
+
+
+def search_crossref(
+    query: str,
+    rows: int = 10,
+    *,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Search published journal articles via the Crossref API.
+
+    Endpoint: GET /crossref
+
+    Args:
+        query: Search string (e.g. "silicon bandgap experiment")
+        rows: Number of results (default 10, max 100)
+        api_client: API client instance
+
+    Returns:
+        dict with count, total_results, and list of papers with DOI and date
+    """
+    try:
+        params = {
+            "query": query,
+            "rows": min(rows, 100),
+        }
+        result = api_client.request("crossref", params)
+        return result
+
+    except Exception as e:
+        return {"error": f"Crossref search error: {str(e)}"}
+
+
+# ---------------------------------------------------------------------------
+# OpenFold: protein + DNA complex structure prediction
+# ---------------------------------------------------------------------------
+
+
+def openfold_predict(
+    protein_sequence: str,
+    dna1: str,
+    dna2: str,
+    *,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Predict a protein-DNA complex 3D structure using NVIDIA OpenFold3.
+
+    Endpoint: GET /openfold/query
+
+    Args:
+        protein_sequence: Protein amino acid sequence (one-letter codes)
+        dna1: First DNA strand sequence
+        dna2: Second (complementary) DNA strand sequence
+        api_client: API client instance
+
+    Returns:
+        dict with PDB structure string of the protein-DNA complex
+    """
+    try:
+        import httpx
+
+        params = {
+            "protein_sequence": protein_sequence,
+            "dna1": dna1,
+            "dna2": dna2,
+            f"APIKEY": api_client.api_key,
+        }
+
+        response = httpx.get(
+            f"{api_client.api_base}/openfold/query",
+            params=params,
+            timeout=300.0,
+        )
+        response.raise_for_status()
+        pdb_text = response.text
+
+        lines = pdb_text.splitlines()
+        num_atoms = sum(1 for l in lines if l.startswith("ATOM"))
+
+        return {
+            "status": "success",
+            "pdb_structure": pdb_text,
+            "num_atoms": num_atoms,
+            "protein_length": len(protein_sequence),
+            "dna1_length": len(dna1),
+            "dna2_length": len(dna2),
+        }
+
+    except Exception as e:
+        return {"error": f"OpenFold prediction error: {str(e)}"}
+
+
+# ---------------------------------------------------------------------------
+# JARVIS DFT: list all queryable property columns
+# ---------------------------------------------------------------------------
+
+
+def list_jarvis_columns(
+    *,
+    api_client: AGAPIClient = None,
+) -> Dict[str, Any]:
+    """
+    Return all column names available in the JARVIS-DFT database.
+    Useful for discovering which properties can be used in query_by_property.
+
+    Endpoint: GET /jarvis_dft/columns
+
+    Returns:
+        dict with list of column names
+    """
+    try:
+        result = api_client.request("jarvis_dft/columns", {})
+        return result
+
+    except Exception as e:
+        return {"error": f"Column listing error: {str(e)}"}
