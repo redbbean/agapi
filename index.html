@@ -1,0 +1,1313 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://knc6.github.io/agapi/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>AGAPI</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#atomgptorg-api-agapi-agentic-ai-for-materials-science" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="AGAPI" class="md-header__button md-logo" aria-label="AGAPI" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AGAPI
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/knc6/agapi" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    knc6/agapi
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="AGAPI" class="md-nav__button md-logo" aria-label="AGAPI" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AGAPI
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/knc6/agapi" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    knc6/agapi
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Quickstart
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✨ Key Capabilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✨ Key Capabilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-materials-api-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Materials API Query
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ai-property-prediction-alignn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. AI Property Prediction (ALIGNN)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-ai-force-field-alignn-ff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. AI Force Field (ALIGNN-FF)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-band-structure-slakonet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Band Structure (SlakoNet)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-xrd-diffractgpt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. XRD / DiffractGPT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-stem-microscopygpt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. STEM / MicroscopyGPT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-structure-manipulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Structure Manipulation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-interface-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Interface Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-literature-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Literature Search
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-step-agentic-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔧 Multi-Step Agentic Workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-llm-backends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🤖 Supported LLM Backends
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-apisfunctions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 Available APIs/Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ...
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 References
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Resources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❤️ Note
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disclaimer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disclaimer
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Quickstart
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✨ Key Capabilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✨ Key Capabilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-materials-api-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Materials API Query
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ai-property-prediction-alignn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. AI Property Prediction (ALIGNN)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-ai-force-field-alignn-ff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. AI Force Field (ALIGNN-FF)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-band-structure-slakonet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Band Structure (SlakoNet)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-xrd-diffractgpt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. XRD / DiffractGPT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-stem-microscopygpt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. STEM / MicroscopyGPT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-structure-manipulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Structure Manipulation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-interface-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Interface Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-literature-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Literature Search
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-step-agentic-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔧 Multi-Step Agentic Workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-llm-backends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🤖 Supported LLM Backends
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-apisfunctions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 Available APIs/Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ...
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 References
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Resources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❤️ Note
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disclaimer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disclaimer
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="atomgptorg-api-agapi-agentic-ai-for-materials-science">🌐 AtomGPT.org API (AGAPI): Agentic AI for Materials Science</h1>
+<p><a href="https://colab.research.google.com/github/knc6/jarvis-tools-notebooks/blob/master/jarvis-tools-notebooks/agapi_example.ipynb"><img alt="Open in Google Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a>
+<a href="https://pypi.org/project/agapi/"><img alt="PyPI" src="https://img.shields.io/pypi/v/agapi" /></a>
+<a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-Apache-blue" /></a></p>
+<p>Empower your materials science research with AtomGPT's Agentic AI API (<strong>AGAPI</strong>). AGAPI removes complex software setups, commercial API cost allowing you to perform advanced predictions, analyses, and explorations through natural language or Python, accelerating materials discovery and design. AGAPI implements a modular architecture separating the reasoning layer (LLM brain) from the execution layer (scientific tools and databases as hands) through a unified REST API interface. This design follows established principles of agentic AI systems.</p>
+<h2 id="quickstart">🚀 Quickstart</h2>
+<p><strong>1. Get your API key</strong> — sign up at <a href="https://atomgpt.org">AtomGPT.org</a> → Account → Settings, then:</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>agapi<span class="w"> </span>jarvis-tools<span class="w"> </span>scipy<span class="w"> </span>httpx
+<span class="nb">export</span><span class="w"> </span><span class="nv">AGAPI_KEY</span><span class="o">=</span><span class="s2">&quot;sk-your-key-here&quot;</span>
+</code></pre></div>
+<p><strong>2. Initialize client and agent:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agapi.agents.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">AGAPIClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agapi.agents</span><span class="w"> </span><span class="kn">import</span> <span class="n">AGAPIAgent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">agapi.agents.functions</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jarvis.io.vasp.inputs</span><span class="w"> </span><span class="kn">import</span> <span class="n">Poscar</span>
+
+<span class="c1"># Direct function calls (API client)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">AGAPIClient</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AGAPI_KEY&quot;</span><span class="p">))</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">query_by_formula</span><span class="p">(</span><span class="s2">&quot;Si&quot;</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;materials&quot;</span><span class="p">][</span><span class="mi">25</span><span class="p">][</span><span class="s2">&quot;formula&quot;</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;materials&quot;</span><span class="p">][</span><span class="mi">25</span><span class="p">][</span><span class="s2">&quot;mbj_bandgap&quot;</span><span class="p">])</span>
+
+<span class="c1"># Natural language queries (AI agent)</span>
+<span class="n">agent</span> <span class="o">=</span> <span class="n">AGAPIAgent</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AGAPI_KEY&quot;</span><span class="p">))</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;What is the bandgap of Silicon?&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="key-capabilities">✨ Key Capabilities</h2>
+<h3 id="common-inputs">Common Inputs</h3>
+<div class="highlight"><pre><span></span><code><span class="n">SI_PRIM</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Si</span>
+<span class="s2">1.0</span>
+<span class="s2">0 2.734 2.734</span>
+<span class="s2">2.734 0 2.734</span>
+<span class="s2">2.734 2.734 0</span>
+<span class="s2">Si</span>
+<span class="s2">2</span>
+<span class="s2">direct</span>
+<span class="s2">0 0 0</span>
+<span class="s2">0.25 0.25 0.25</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">GAAS_PRIM</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;GaAs</span>
+<span class="s2">1.0</span>
+<span class="s2">0 2.875 2.875</span>
+<span class="s2">2.875 0 2.875</span>
+<span class="s2">2.875 2.875 0</span>
+<span class="s2">Ga As</span>
+<span class="s2">1 1</span>
+<span class="s2">direct</span>
+<span class="s2">0 0 0</span>
+<span class="s2">0.25 0.25 0.25</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">SI_XRD</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;28.44 1.00</span>
+<span class="s2">47.30 0.55</span>
+<span class="s2">56.12 0.30</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="1-materials-api-query">1. Materials API Query</h3>
+<p>Access JARVIS-DFT and more.</p>
+<p><strong>API Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">agapi.agents.functions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">query_by_formula</span><span class="p">,</span>
+    <span class="n">query_by_jid</span><span class="p">,</span>
+    <span class="n">query_by_elements</span><span class="p">,</span>
+    <span class="n">query_by_property</span><span class="p">,</span>
+    <span class="n">find_extreme</span><span class="p">,</span>
+    <span class="n">alignn_predict</span><span class="p">,</span>
+    <span class="n">alignn_ff_relax</span><span class="p">,</span>
+    <span class="n">slakonet_bandstructure</span><span class="p">,</span>
+    <span class="n">generate_interface</span><span class="p">,</span>
+    <span class="n">make_supercell</span><span class="p">,</span>
+    <span class="n">substitute_atom</span><span class="p">,</span>
+    <span class="n">create_vacancy</span><span class="p">,</span>
+    <span class="n">generate_xrd_pattern</span><span class="p">,</span>
+    <span class="n">protein_fold</span><span class="p">,</span>
+    <span class="n">diffractgpt_predict</span><span class="p">,</span>
+    <span class="n">alignn_ff_single_point</span><span class="p">,</span>
+    <span class="n">alignn_ff_optimize</span><span class="p">,</span>
+    <span class="n">alignn_ff_md</span><span class="p">,</span>
+    <span class="n">pxrd_match</span><span class="p">,</span>
+    <span class="n">xrd_analyze</span><span class="p">,</span>
+    <span class="n">microscopygpt_analyze</span><span class="p">,</span>
+    <span class="n">query_mp</span><span class="p">,</span>
+    <span class="n">query_oqmd</span><span class="p">,</span>
+    <span class="n">search_arxiv</span><span class="p">,</span>
+    <span class="n">search_crossref</span><span class="p">,</span>
+    <span class="n">openfold_predict</span><span class="p">,</span>
+    <span class="n">list_jarvis_columns</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">query_by_formula</span><span class="p">(</span><span class="s2">&quot;Si&quot;</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+<span class="k">assert</span> <span class="s2">&quot;error&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">r</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">query_by_jid</span><span class="p">(</span><span class="s2">&quot;JVASP-1002&quot;</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;POSCAR&quot;</span><span class="p">),</span> <span class="nb">str</span><span class="p">)</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">query_by_elements</span><span class="p">(</span><span class="s2">&quot;Si&quot;</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+<span class="k">assert</span> <span class="s2">&quot;error&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">r</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">query_by_property</span><span class="p">(</span><span class="s2">&quot;bandgap&quot;</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="n">elements</span><span class="o">=</span><span class="s2">&quot;Si&quot;</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+<span class="k">assert</span> <span class="s2">&quot;error&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">r</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">find_extreme</span><span class="p">(</span><span class="s2">&quot;bulk modulus&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">elements</span><span class="o">=</span><span class="s2">&quot;Si&quot;</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+<span class="k">assert</span> <span class="s2">&quot;error&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">r</span>
+</code></pre></div></p>
+<p><strong>Natural Language Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;Show me all MgB2 polymorphs&quot;</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;What&#39;s the Tc_Supercon for MgB2 and what&#39;s the JARVIS-ID for it?&quot;</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;What&#39;s the stiffest Si,O material?&quot;</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;Find materials with bulk modulus &gt; 200 GPa&quot;</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;Compare bandgaps across BN, AlN, GaN, InN&quot;</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;What are the formation energies of SiC, AlN, MgO?&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<hr />
+<h3 id="2-ai-property-prediction-alignn">2. AI Property Prediction (ALIGNN)</h3>
+<p>Predict bandgap, formation energy, elastic moduli, and more using graph neural networks.</p>
+<p><strong>API Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">agapi.agents.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">alignn_predict</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">alignn_predict</span><span class="p">(</span><span class="n">jid</span><span class="o">=</span><span class="s2">&quot;JVASP-1002&quot;</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;success&quot;</span>
+</code></pre></div></p>
+<p><strong>Natural Language Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;Predict properties of JARVIS-ID JVASP-1002 with ALIGNN&quot;</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predict properties using ALIGNN for this structure:</span><span class="se">\n\n</span><span class="si">{</span><span class="n">SI_PRIM</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<hr />
+<h3 id="3-ai-force-field-alignn-ff">3. AI Force Field (ALIGNN-FF)</h3>
+<p>Structure relaxation, single-point energy, and MD with near-DFT accuracy.</p>
+<p><strong>API Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">agapi.agents.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">alignn_ff_relax</span><span class="p">,</span> <span class="n">alignn_ff_single_point</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">alignn_ff_relax</span><span class="p">(</span><span class="n">SI_PRIM</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;success&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Poscar</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;relaxed_poscar&quot;</span><span class="p">]))</span>   <span class="c1"># view relaxed structure</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">alignn_ff_single_point</span><span class="p">(</span><span class="n">SI_PRIM</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+<span class="k">assert</span> <span class="s2">&quot;energy_eV&quot;</span> <span class="ow">in</span> <span class="n">r</span>
+</code></pre></div></p>
+<p><strong>Natural Language Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimize structure with ALIGNN-FF:</span><span class="se">\n\n</span><span class="si">{</span><span class="n">SI_PRIM</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;Get the single-point energy of this Si primitive cell.&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<hr />
+<h3 id="4-band-structure-slakonet">4. Band Structure (SlakoNet)</h3>
+<p>Tight-binding band structures from neural network Slater-Koster parameters.</p>
+<p><strong>API Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">agapi.agents.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">slakonet_bandstructure</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">slakonet_bandstructure</span><span class="p">(</span><span class="n">SI_PRIM</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;success&quot;</span>
+</code></pre></div></p>
+<p><strong>Natural Language Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;Compute the band structure of Si.&quot;</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Plot the electronic band structure for this POSCAR:</span><span class="se">\n\n</span><span class="si">{</span><span class="n">SI_PRIM</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<hr />
+<h3 id="5-xrd-diffractgpt">5. XRD / DiffractGPT</h3>
+<p>Match PXRD patterns, identify phases, and analyze experimental diffraction data.</p>
+<p><strong>API Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">agapi.agents.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">pxrd_match</span><span class="p">,</span> <span class="n">xrd_analyze</span><span class="p">,</span> <span class="n">diffractgpt_predict</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">pxrd_match</span><span class="p">(</span><span class="s2">&quot;Si&quot;</span><span class="p">,</span> <span class="n">SI_XRD</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+<span class="k">if</span> <span class="s2">&quot;matched_poscar&quot;</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">Poscar</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;matched_poscar&quot;</span><span class="p">]))</span>   <span class="c1"># view matched structure</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">xrd_analyze</span><span class="p">(</span><span class="s2">&quot;Si&quot;</span><span class="p">,</span> <span class="n">SI_XRD</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">diffractgpt_predict</span><span class="p">(</span><span class="s2">&quot;Si&quot;</span><span class="p">,</span> <span class="s2">&quot;28.4(1.0),47.3(0.49)&quot;</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+</code></pre></div></p>
+<p><strong>Natural Language Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;Identify the phase from this XRD pattern for Silicon: [XRD data]&quot;</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;Analyze this PXRD pattern and suggest possible structures.&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<hr />
+<h3 id="6-stem-microscopygpt">6. STEM / MicroscopyGPT</h3>
+<p>Analyze STEM, TEM, and electron microscopy images using AI — identify atomic columns, measure lattice spacings, detect defects, and interpret microstructure.</p>
+<p><strong>API Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">agapi.agents.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">microscopygpt_analyze</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">microscopygpt_analyze</span><span class="p">(</span><span class="s2">&quot;HRTEM image of Si lattice&quot;</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+</code></pre></div></p>
+<p><strong>Natural Language Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;Analyze this STEM image of a GaN thin film: [image]&quot;</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;What defects are visible in this HRTEM image?&quot;</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;Measure the d-spacing from this electron diffraction pattern.&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<hr />
+<h3 id="7-structure-manipulation">7. Structure Manipulation</h3>
+<p>Supercells, substitutions, vacancies, and XRD pattern generation — runs locally, no API call needed.</p>
+<p><strong>API Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">agapi.agents.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_supercell</span><span class="p">,</span> <span class="n">substitute_atom</span><span class="p">,</span> <span class="n">create_vacancy</span><span class="p">,</span> <span class="n">generate_xrd_pattern</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">make_supercell</span><span class="p">(</span><span class="n">SI_PRIM</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="k">assert</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;supercell_atoms&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;original_atoms&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original atoms: </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;original_atoms&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, Supercell atoms: </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;supercell_atoms&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># Expected: Original atoms: 2, Supercell atoms: 8</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">substitute_atom</span><span class="p">(</span><span class="n">GAAS_PRIM</span><span class="p">,</span> <span class="s2">&quot;Ga&quot;</span><span class="p">,</span> <span class="s2">&quot;Al&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">assert</span> <span class="s2">&quot;Al&quot;</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;new_formula&quot;</span><span class="p">]</span>
+<span class="c1"># Expected new_formula: AlAs</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">create_vacancy</span><span class="p">(</span><span class="n">GAAS_PRIM</span><span class="p">,</span> <span class="s2">&quot;Ga&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;new_atoms&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;original_atoms&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="c1"># Expected: one fewer atom than original</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">generate_xrd_pattern</span><span class="p">(</span><span class="n">SI_PRIM</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;formula&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Si&quot;</span>
+</code></pre></div></p>
+<p><strong>Natural Language Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;Make a 2x1x1 supercell of the most stable GaN.&quot;</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;Substitute one Ga with Al in this GaAs structure.&quot;</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;Create a Ga vacancy in GaAs and predict its properties.&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<hr />
+<h3 id="8-interface-generation">8. Interface Generation</h3>
+<p>Build heterostructure interfaces between two materials.</p>
+<p><strong>API Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">agapi.agents.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_interface</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">generate_interface</span><span class="p">(</span><span class="n">SI_PRIM</span><span class="p">,</span> <span class="n">GAAS_PRIM</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;success&quot;</span>
+</code></pre></div></p>
+<p><strong>Natural Language Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Create a GaN/AlN heterostructure interface:</span>
+<span class="s2">    1. Find GaN (most stable)</span>
+<span class="s2">    2. Find AlN (most stable)</span>
+<span class="s2">    3. Generate (001)/(001) interface</span>
+<span class="s2">    4. Show POSCAR</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">max_context_messages</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></div></p>
+<hr />
+<h3 id="9-literature-search">9. Literature Search</h3>
+<p>Search arXiv and Crossref for relevant research papers.</p>
+<p><strong>API Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">agapi.agents.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">search_arxiv</span><span class="p">,</span> <span class="n">search_crossref</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">search_arxiv</span><span class="p">(</span><span class="s2">&quot;GaN&quot;</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">search_crossref</span><span class="p">(</span><span class="s2">&quot;GaN&quot;</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+</code></pre></div></p>
+<p><strong>Natural Language Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;Find recent papers on perovskite solar cells on arXiv.&quot;</span><span class="p">)</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;Search for publications about ALIGNN neural networks.&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<hr />
+<h2 id="multi-step-agentic-workflow">🔧 Multi-Step Agentic Workflow</h2>
+<div class="highlight"><pre><span></span><code><span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">1. Find all GaN materials in the JARVIS-DFT database</span>
+<span class="s2">2. Get the POSCAR for the most stable one</span>
+<span class="s2">3. Make a 2x1x1 supercell</span>
+<span class="s2">4. Substitute one Ga with Al</span>
+<span class="s2">5. Generate powder XRD pattern</span>
+<span class="s2">6. Optimize structure with ALIGNN-FF</span>
+<span class="s2">7. Predict properties with ALIGNN</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">max_context_messages</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">agent</span><span class="o">.</span><span class="n">query_sync</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Create a GaN/AlN heterostructure interface:</span>
+<span class="s2">1. Find GaN (most stable)</span>
+<span class="s2">2. Find AlN (most stable)</span>
+<span class="s2">3. Generate (001)/(001) interface</span>
+<span class="s2">4. Show POSCAR</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">max_context_messages</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="supported-llm-backends">🤖 Supported LLM Backends</h2>
+<p>AGAPI supports multiple LLM backends. Set <code>model</code> when initializing the agent:</p>
+<div class="highlight"><pre><span></span><code><span class="n">agent</span> <span class="o">=</span> <span class="n">AGAPIAgent</span><span class="p">(</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AGAPI_KEY&quot;</span><span class="p">),</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;openai/gpt-oss-20b&quot;</span> 
+<span class="p">)</span>
+</code></pre></div>
+<p>Available models:</p>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenAI</td>
+<td><code>openai/gpt-oss-20b</code></td>
+</tr>
+<tr>
+<td>OpenAI</td>
+<td><code>openai/gpt-oss-120b</code></td>
+</tr>
+<tr>
+<td>Meta</td>
+<td><code>meta/llama-4-maverick-17b-128e-instruct</code></td>
+</tr>
+<tr>
+<td>Meta</td>
+<td><code>meta/llama-3.2-90b-vision-instruct</code></td>
+</tr>
+<tr>
+<td>Meta</td>
+<td><code>meta/llama-3.2-1b-instruct</code></td>
+</tr>
+<tr>
+<td>Google</td>
+<td><code>google/gemini-2.5-flash</code></td>
+</tr>
+<tr>
+<td>Google</td>
+<td><code>google/gemma-3-27b-it</code></td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td><code>deepseek-ai/deepseek-v3.1</code></td>
+</tr>
+<tr>
+<td>Moonshot</td>
+<td><code>moonshotai/kimi-k2-instruct-0905</code></td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td><code>qwen/qwen3-next-80b-a3b-instruct</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="available-apisfunctions">📦 Available APIs/Functions</h2>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>query_by_formula</code></td>
+<td>Search by chemical formula</td>
+</tr>
+<tr>
+<td><code>query_by_jid</code></td>
+<td>Fetch by JARVIS ID</td>
+</tr>
+<tr>
+<td><code>query_by_elements</code></td>
+<td>Filter by constituent elements</td>
+</tr>
+<tr>
+<td><code>query_by_property</code></td>
+<td>Filter by property range</td>
+</tr>
+<tr>
+<td><code>find_extreme</code></td>
+<td>Find max/min property material</td>
+</tr>
+<tr>
+<td><code>alignn_predict</code></td>
+<td>GNN property prediction</td>
+</tr>
+<tr>
+<td><code>alignn_ff_relax</code></td>
+<td>Structure relaxation</td>
+</tr>
+<tr>
+<td><code>alignn_ff_single_point</code></td>
+<td>Single-point energy</td>
+</tr>
+<tr>
+<td><code>slakonet_bandstructure</code></td>
+<td>TB band structure</td>
+</tr>
+<tr>
+<td><code>generate_interface</code></td>
+<td>Heterostructure builder</td>
+</tr>
+<tr>
+<td><code>make_supercell</code></td>
+<td>Supercell generation</td>
+</tr>
+<tr>
+<td><code>substitute_atom</code></td>
+<td>Atomic substitution</td>
+</tr>
+<tr>
+<td><code>create_vacancy</code></td>
+<td>Vacancy creation</td>
+</tr>
+<tr>
+<td><code>generate_xrd_pattern</code></td>
+<td>Simulated XRD</td>
+</tr>
+<tr>
+<td><code>pxrd_match / xrd_analyze</code></td>
+<td>XRD phase matching</td>
+</tr>
+<tr>
+<td><code>diffractgpt_predict</code></td>
+<td>AI XRD interpretation</td>
+</tr>
+<tr>
+<td><code>microscopygpt_analyze</code></td>
+<td>AI STEM/TEM image analysis</td>
+</tr>
+<tr>
+<td><code>query_mp</code></td>
+<td>Materials Project query</td>
+</tr>
+<tr>
+<td><code>search_arxiv / search_crossref</code></td>
+<td>Literature search</td>
+</tr>
+<tr>
+<td><code>protein_fold</code></td>
+<td>Protein structure prediction</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_1">...</h2>
+<h2 id="references">📖 References</h2>
+<p>If you find this work helpful, please cite:</p>
+<ol>
+<li>
+<p><strong>AGAPI-Agents: An Open-Access Agentic AI Platform for Accelerated Materials Design on AtomGPT.org</strong>
+   https://doi.org/10.48550/arXiv.2512.11935</p>
+</li>
+<li>
+<p><strong>ChatGPT Material Explorer: Design and Implementation of a Custom GPT Assistant for Materials Science Applications</strong>
+   https://doi.org/10.1016/j.commatsci.2025.114063</p>
+</li>
+<li>
+<p><strong>The JARVIS Infrastructure Is All You Need for Materials Design</strong>
+   https://doi.org/10.1016/j.commatsci.2025.114063</p>
+</li>
+</ol>
+<p>📄 Full publication list: <a href="https://scholar.google.com/citations?hl=en&amp;user=YVP36YgAAAAJ&amp;view_op=list_works&amp;sortby=pubdate">Google Scholar</a></p>
+<hr />
+<h2 id="resources">📚 Resources</h2>
+<ul>
+<li>🔬 <strong>Research Group</strong>: <a href="https://choudhary.wse.jhu.edu/">AtomGPTLab @ JHU</a></li>
+<li>📖 <strong>Docs</strong>: <a href="https://atomgpt.org/docs">AtomGPT.org/docs</a></li>
+<li>🧪 <strong>Colab</strong>: <a href="https://colab.research.google.com/github/knc6/jarvis-tools-notebooks/blob/master/jarvis-tools-notebooks/agapi_example.ipynb">AGAPI Example Notebook</a></li>
+<li>▶️ <strong>YouTube</strong>: <a href="https://www.youtube.com/playlist?list=PLjf6vHVv7AoInTVQmfNSMs_12DBXYCcDd">Demo Playlist</a></li>
+</ul>
+<hr />
+<h2 id="note">❤️ Note</h2>
+<p><strong>AGAPI (ἀγάπη)</strong> is a Greek word meaning <em>unconditional love</em>. </p>
+<h2 id="disclaimer">Disclaimer</h2>
+<p>AtomGPT.org can make mistakes — please verify critical results. We hope this API fosters open, collaborative, and accelerated discovery in materials science.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.top", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
