@@ -1,12 +1,12 @@
-# 🌐 AtomGPT.org API (AGAPI) — Agentic AI for Materials Science
+# 🌐 AtomGPT.org API (AGAPI): Agentic AI for Materials Science
 
 [![Open in Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/knc6/jarvis-tools-notebooks/blob/master/jarvis-tools-notebooks/agapi_example.ipynb)
 [![PyPI](https://img.shields.io/pypi/v/agapi)](https://pypi.org/project/agapi/)
-[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache-blue)](LICENSE)
 
-**AGAPI** removes complex software setups and commercial API costs — query materials databases, run AI predictions, and explore structures via natural language or Python, accelerating materials discovery and design.
+Empower your materials science research with AtomGPT's Agentic AI API (**AGAPI**). AGAPI removes complex software setups, commercial API cost allowing you to perform advanced predictions, analyses, and explorations through natural language or Python, accelerating materials discovery and design. AGAPI implements a modular architecture separating the reasoning layer (LLM brain) from the execution layer (scientific tools and databases as hands) through a unified REST API interface. This design follows established principles of agentic AI systems.
 
----
+
 
 ## 🚀 Quickstart
 
@@ -23,14 +23,16 @@ export AGAPI_KEY="sk-your-key-here"
 import os
 from agapi.agents.client import AGAPIClient
 from agapi.agents import AGAPIAgent
+from agapi.agents.functions import *
 from jarvis.io.vasp.inputs import Poscar
 
 # Direct function calls (API client)
 client = AGAPIClient(api_key=os.environ.get("AGAPI_KEY"))
+result = query_by_formula("Si", client)
+print(result["materials"][25]["formula"], result["materials"][25]["mbj_bandgap"])
 
 # Natural language queries (AI agent)
 agent = AGAPIAgent(api_key=os.environ.get("AGAPI_KEY"))
-
 response = agent.query_sync("What is the bandgap of Silicon?")
 print(response)
 ```
@@ -39,7 +41,7 @@ print(response)
 
 ## ✨ Key Capabilities
 
-### Common POSCAR Inputs
+### Common Inputs
 
 ```python
 SI_PRIM = """Si
@@ -74,12 +76,40 @@ SI_XRD = """28.44 1.00
 
 ---
 
-### 1. Materials Database Query
-Access JARVIS-DFT, Materials Project, OQMD, and more.
+### 1. Materials API Query
+Access JARVIS-DFT and more.
 
 **API Example:**
 ```python
-from agapi.agents.functions import query_by_formula, query_by_jid, query_by_elements, query_by_property, find_extreme
+from agapi.agents.functions import (
+    query_by_formula,
+    query_by_jid,
+    query_by_elements,
+    query_by_property,
+    find_extreme,
+    alignn_predict,
+    alignn_ff_relax,
+    slakonet_bandstructure,
+    generate_interface,
+    make_supercell,
+    substitute_atom,
+    create_vacancy,
+    generate_xrd_pattern,
+    protein_fold,
+    diffractgpt_predict,
+    alignn_ff_single_point,
+    alignn_ff_optimize,
+    alignn_ff_md,
+    pxrd_match,
+    xrd_analyze,
+    microscopygpt_analyze,
+    query_mp,
+    query_oqmd,
+    search_arxiv,
+    search_crossref,
+    openfold_predict,
+    list_jarvis_columns,
+)
 
 r = query_by_formula("Si", client)
 assert "error" not in r
@@ -215,7 +245,7 @@ agent.query_sync("What defects are visible in this HRTEM image?")
 agent.query_sync("Measure the d-spacing from this electron diffraction pattern.")
 ```
 
-> **Tip:** Compatible with HAADF-STEM, BF-TEM, HRTEM, and EDS/EELS maps.
+
 
 ---
 
@@ -322,7 +352,36 @@ Create a GaN/AlN heterostructure interface:
 
 ---
 
-## 📦 Available Functions
+## 🤖 Supported LLM Backends
+
+AGAPI supports multiple LLM backends. Set `model` when initializing the agent:
+
+```python
+agent = AGAPIAgent(
+    api_key=os.environ.get("AGAPI_KEY"),
+    model="openai/gpt-oss-20b" 
+)
+```
+
+Available models:
+
+| Provider | Model |
+|---|---|
+| OpenAI | `openai/gpt-oss-20b` |
+| OpenAI | `openai/gpt-oss-120b` |
+| Meta | `meta/llama-4-maverick-17b-128e-instruct` |
+| Meta | `meta/llama-3.2-90b-vision-instruct` |
+| Meta | `meta/llama-3.2-1b-instruct` |
+| Google | `google/gemini-2.5-flash` |
+| Google | `google/gemma-3-27b-it` |
+| DeepSeek | `deepseek-ai/deepseek-v3.1` |
+| Moonshot | `moonshotai/kimi-k2-instruct-0905` |
+| Qwen | `qwen/qwen3-next-80b-a3b-instruct` |
+
+
+---
+
+## 📦 Available APIs/Functions
 
 | Function | Description |
 |---|---|
@@ -347,6 +406,7 @@ Create a GaN/AlN heterostructure interface:
 | `search_arxiv / search_crossref` | Literature search |
 | `protein_fold` | Protein structure prediction |
 
+...
 ---
 
 ## 📖 References
@@ -377,4 +437,8 @@ If you find this work helpful, please cite:
 
 ## ❤️ Note
 
-**AGAPI (ἀγάπη)** is a Greek word meaning *unconditional love*. AtomGPT.org can make mistakes — please verify critical results. We hope this API fosters open, collaborative, and accelerated discovery in materials science.
+**AGAPI (ἀγάπη)** is a Greek word meaning *unconditional love*. 
+
+## Disclaimer
+
+AtomGPT.org can make mistakes — please verify critical results. We hope this API fosters open, collaborative, and accelerated discovery in materials science.
