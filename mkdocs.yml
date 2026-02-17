@@ -1,0 +1,19 @@
+site_name: AGAPI
+site_url: https://knc6.github.io/agapi
+repo_url: https://github.com/knc6/agapi
+repo_name: knc6/agapi
+
+theme:
+  name: material
+  palette:
+    primary: indigo
+  features:
+    - navigation.top
+    - content.code.copy
+
+nav:
+  - Home: index.md
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences

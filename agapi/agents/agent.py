@@ -696,7 +696,7 @@ class AGAPIAgent:
     def query_sync(
         self,
         query: str,
-        verbose: bool = False,
+        verbose: bool = True,
         render_html: bool = False,
         html_style: str = "bootstrap",
         max_show: int = 20,
