@@ -1,72 +1,350 @@
-# agapi
+# 🌐 AtomGPT.org API (AGAPI) — Agentic AI for Materials Science
 
-A tiny Python SDK + CLI for the AtomGPT.org API (AGAPI).
+[![Open in Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/knc6/jarvis-tools-notebooks/blob/master/jarvis-tools-notebooks/agapi_example.ipynb)
+[![PyPI](https://img.shields.io/pypi/v/agapi)](https://pypi.org/project/agapi/)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-## Install (dev)
+**AGAPI** removes complex software setups — query materials databases, run AI predictions, and explore structures via natural language or Python.
+
+---
+
+## 🚀 Quickstart
 
 ```bash
-pip install agapi jarvis-tools
+pip install agapi jarvis-tools scipy httpx
 ```
-
-Set your key once (recommended):
-
-Website: https://atomgpt.org/
-
-Profile >> Settings >> Account >> API Keys >> Show
-
-
-
-## Quickstart
 
 ```python
-from agapi import Agapi
+import os
+from agapi.agents import AGAPIAgent
 
-client = Agapi(api_key="sk-")  # reads env vars
-# JARVIS-DFT by formula
-r = client.jarvis_dft_query(formula="MoS2")
-print(r)
-
-# JARVIS-DFT by search
-r = client.jarvis_dft_query(search="-Mo-S")
-print(r)
-
-# ALIGNN from POSCAR path
-r = client.alignn_query(file_path="POSCAR")
-print(r.keys())
-
-# ALIGNN-FF from POSCAR string
-r = client.alignn_ff_query(poscar_string=open("POSCAR").read())
-print(r)
-
-# Protein fold (returns binary content if format=zip)
-zbytes = client.protein_fold_query(sequence="AAAAA", format="zip")
-open("protein.zip", "wb").write(zbytes)
-
-# PXRD from a data file
-r = client.pxrd_query(file_path="Lab6data.dat")
-print(r)
+agent = AGAPIAgent(api_key=os.environ.get("AGAPI_KEY"))
+response = agent.query_sync("What is the bandgap of Silicon?")
+print(response)
 ```
 
-# TODO
-## CLI
+> Get your `AGAPI_KEY` at [AtomGPT.org](https://atomgpt.org) → Account → Settings.
 
-```bash
-# JARVIS-DFT by formula
-agapi jarvis --formula MoS2
+---
 
-# JARVIS-DFT by search
-agapi jarvis --search "-Mo-S"
+## ✨ Key Capabilities
 
-# ALIGNN (file or stdin)
-agapi alignn --file POSCAR
-cat POSCAR | agapi alignn --stdin
+### Common POSCAR Inputs
 
-# ALIGNN-FF
-agapi alignn-ff --file POSCAR
+```python
+SI_PRIM = """Si
+1.0
+0 2.734 2.734
+2.734 0 2.734
+2.734 2.734 0
+Si
+2
+direct
+0 0 0
+0.25 0.25 0.25
+"""
 
-# Protein fold
-agapi protein --sequence AAAAA --format zip --out protein.zip
+GAAS_PRIM = """GaAs
+1.0
+0 2.875 2.875
+2.875 0 2.875
+2.875 2.875 0
+Ga As
+1 1
+direct
+0 0 0
+0.25 0.25 0.25
+"""
 
-# PXRD
-agapi pxrd --file Lab6data.dat
+SI_XRD = """28.44 1.00
+47.30 0.55
+56.12 0.30
+"""
 ```
+
+---
+
+### 1. Materials Database Query
+Access JARVIS-DFT, Materials Project, OQMD, and more.
+
+**API Example:**
+```python
+from agapi.agents.functions import query_by_formula, query_by_jid, query_by_elements, query_by_property, find_extreme
+
+r = query_by_formula("Si", client)
+assert "error" not in r
+
+r = query_by_jid("JVASP-1002", client)
+assert isinstance(r.get("POSCAR"), str)
+
+r = query_by_elements("Si", client)
+assert "error" not in r
+
+r = query_by_property("bandgap", 0.1, 3.0, elements="Si", api_client=client)
+assert "error" not in r
+
+r = find_extreme("bulk modulus", True, elements="Si", api_client=client)
+assert "error" not in r
+```
+
+**Natural Language Example:**
+```python
+agent.query_sync("Show me all MgB2 polymorphs")
+agent.query_sync("What's the Tc_Supercon for MgB2 and what's the JARVIS-ID for it?")
+agent.query_sync("What's the stiffest Si,O material?")
+agent.query_sync("Find materials with bulk modulus > 200 GPa")
+agent.query_sync("Compare bandgaps across BN, AlN, GaN, InN")
+agent.query_sync("What are the formation energies of SiC, AlN, MgO?")
+```
+
+---
+
+### 2. AI Property Prediction (ALIGNN)
+Predict bandgap, formation energy, elastic moduli, and more using graph neural networks.
+
+**API Example:**
+```python
+from agapi.agents.functions import alignn_predict
+
+r = alignn_predict(jid="JVASP-1002", api_client=client)
+assert r.get("status") == "success"
+```
+
+**Natural Language Example:**
+```python
+agent.query_sync("Predict properties of JARVIS-ID JVASP-1002 with ALIGNN")
+agent.query_sync(f"Predict properties using ALIGNN for this structure:\n\n{SI_PRIM}")
+```
+
+---
+
+### 3. AI Force Field (ALIGNN-FF)
+Structure relaxation, single-point energy, and MD with near-DFT accuracy.
+
+**API Example:**
+```python
+from agapi.agents.functions import alignn_ff_relax, alignn_ff_single_point
+
+r = alignn_ff_relax(SI_PRIM, api_client=client)
+assert r.get("status") == "success"
+
+r = alignn_ff_single_point(SI_PRIM, api_client=client)
+assert "energy_eV" in r
+```
+
+**Natural Language Example:**
+```python
+agent.query_sync(f"Optimize structure with ALIGNN-FF:\n\n{SI_PRIM}")
+agent.query_sync("Get the single-point energy of this Si primitive cell.")
+```
+
+---
+
+### 4. Band Structure (SlakoNet)
+Tight-binding band structures from neural network Slater-Koster parameters.
+
+**API Example:**
+```python
+from agapi.agents.functions import slakonet_bandstructure
+
+r = slakonet_bandstructure(SI_PRIM, api_client=client)
+assert r.get("status") == "success"
+```
+
+**Natural Language Example:**
+```python
+agent.query_sync("Compute the band structure of Si.")
+agent.query_sync(f"Plot the electronic band structure for this POSCAR:\n\n{SI_PRIM}")
+```
+
+---
+
+### 5. XRD / DiffractGPT
+Match PXRD patterns, identify phases, and analyze experimental diffraction data.
+
+**API Example:**
+```python
+from agapi.agents.functions import pxrd_match, xrd_analyze, diffractgpt_predict
+
+r = pxrd_match("Si", SI_XRD, api_client=client)
+assert isinstance(r, dict)
+
+r = xrd_analyze("Si", SI_XRD, api_client=client)
+assert isinstance(r, dict)
+
+r = diffractgpt_predict("Si", "28.4(1.0),47.3(0.49)", client)
+assert isinstance(r, dict)
+```
+
+**Natural Language Example:**
+```python
+agent.query_sync("Identify the phase from this XRD pattern for Silicon: [XRD data]")
+agent.query_sync("Analyze this PXRD pattern and suggest possible structures.")
+```
+
+---
+
+### 6. STEM / MicroscopyGPT
+Analyze STEM, TEM, and electron microscopy images using AI — identify atomic columns, measure lattice spacings, detect defects, and interpret microstructure.
+
+**API Example:**
+```python
+from agapi.agents.functions import microscopygpt_analyze
+
+r = microscopygpt_analyze("HRTEM image of Si lattice", api_client=client)
+assert isinstance(r, dict)
+```
+
+**Natural Language Example:**
+```python
+agent.query_sync("Analyze this STEM image of a GaN thin film: [image]")
+agent.query_sync("What defects are visible in this HRTEM image?")
+agent.query_sync("Measure the d-spacing from this electron diffraction pattern.")
+```
+
+> **Tip:** Compatible with HAADF-STEM, BF-TEM, HRTEM, and EDS/EELS maps.
+
+---
+
+### 7. Structure Manipulation
+Supercells, substitutions, vacancies, and XRD pattern generation — runs locally, no API call needed.
+
+**API Example:**
+```python
+from agapi.agents.functions import make_supercell, substitute_atom, create_vacancy, generate_xrd_pattern
+
+r = make_supercell(SI_PRIM, [2, 2, 1])
+assert r["supercell_atoms"] > r["original_atoms"]
+print(f"Original atoms: {r['original_atoms']}, Supercell atoms: {r['supercell_atoms']}")
+# Expected: Original atoms: 2, Supercell atoms: 8
+
+r = substitute_atom(GAAS_PRIM, "Ga", "Al", 1)
+assert "Al" in r["new_formula"]
+# Expected new_formula: AlAs
+
+r = create_vacancy(GAAS_PRIM, "Ga", 1)
+assert r["new_atoms"] == r["original_atoms"] - 1
+# Expected: one fewer atom than original
+
+r = generate_xrd_pattern(SI_PRIM)
+assert r["formula"] == "Si"
+```
+
+**Natural Language Example:**
+```python
+agent.query_sync("Make a 2x1x1 supercell of the most stable GaN.")
+agent.query_sync("Substitute one Ga with Al in this GaAs structure.")
+agent.query_sync("Create a Ga vacancy in GaAs and predict its properties.")
+```
+
+---
+
+### 8. Interface Generation
+Build heterostructure interfaces between two materials.
+
+**API Example:**
+```python
+from agapi.agents.functions import generate_interface
+
+r = generate_interface(SI_PRIM, GAAS_PRIM, api_client=client)
+assert r.get("status") == "success"
+```
+
+**Natural Language Example:**
+```python
+agent.query_sync("""
+    Create a GaN/AlN heterostructure interface:
+    1. Find GaN (most stable)
+    2. Find AlN (most stable)
+    3. Generate (001)/(001) interface
+    4. Show POSCAR
+""", max_context_messages=20)
+```
+
+---
+
+### 9. Literature Search
+Search arXiv and Crossref for relevant research papers.
+
+**API Example:**
+```python
+from agapi.agents.functions import search_arxiv, search_crossref
+
+r = search_arxiv("GaN", max_results=2, api_client=client)
+assert isinstance(r, dict)
+
+r = search_crossref("GaN", rows=2, api_client=client)
+assert isinstance(r, dict)
+```
+
+**Natural Language Example:**
+```python
+agent.query_sync("Find recent papers on perovskite solar cells on arXiv.")
+agent.query_sync("Search for publications about ALIGNN neural networks.")
+```
+
+---
+
+## 🔧 Multi-Step Agentic Workflow
+
+```python
+agent.query_sync("""
+1. Find all GaN materials in the JARVIS-DFT database
+2. Get the POSCAR for the most stable one
+3. Make a 2x1x1 supercell
+4. Substitute one Ga with Al
+5. Generate powder XRD pattern
+6. Optimize structure with ALIGNN-FF
+7. Predict properties with ALIGNN
+""", max_context_messages=20, verbose=True)
+
+agent.query_sync("""
+Create a GaN/AlN heterostructure interface:
+1. Find GaN (most stable)
+2. Find AlN (most stable)
+3. Generate (001)/(001) interface
+4. Show POSCAR
+""", max_context_messages=20, verbose=True)
+```
+
+---
+
+## 📦 Available Functions
+
+| Function | Description |
+|---|---|
+| `query_by_formula` | Search by chemical formula |
+| `query_by_jid` | Fetch by JARVIS ID |
+| `query_by_elements` | Filter by constituent elements |
+| `query_by_property` | Filter by property range |
+| `find_extreme` | Find max/min property material |
+| `alignn_predict` | GNN property prediction |
+| `alignn_ff_relax` | Structure relaxation |
+| `alignn_ff_single_point` | Single-point energy |
+| `slakonet_bandstructure` | TB band structure |
+| `generate_interface` | Heterostructure builder |
+| `make_supercell` | Supercell generation |
+| `substitute_atom` | Atomic substitution |
+| `create_vacancy` | Vacancy creation |
+| `generate_xrd_pattern` | Simulated XRD |
+| `pxrd_match / xrd_analyze` | XRD phase matching |
+| `diffractgpt_predict` | AI XRD interpretation |
+| `microscopygpt_analyze` | AI STEM/TEM image analysis |
+| `query_mp` | Materials Project query |
+| `search_arxiv / search_crossref` | Literature search |
+| `protein_fold` | Protein structure prediction |
+
+---
+
+## 📚 Resources
+
+- 📖 **Docs**: [AtomGPT.org/docs](https://atomgpt.org/docs)
+- 🧪 **Colab**: [AGAPI Example Notebook](https://colab.research.google.com/github/knc6/jarvis-tools-notebooks/blob/master/jarvis-tools-notebooks/agapi_example.ipynb)
+- ▶️ **YouTube**: [Demo Playlist](https://youtube.com)
+- 📄 **Papers**: [Google Scholar](https://scholar.google.com)
+
+---
+
+## ❤️ Note
+
+**AGAPI (ἀγάπη)** is a Greek word meaning *unconditional love*. AtomGPT.org can make mistakes — please verify critical results. We hope this API fosters open, collaborative, and accelerated discovery in materials science.
