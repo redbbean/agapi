@@ -62,6 +62,7 @@ from agapi.agents.functions import (
     list_jarvis_columns,
 )
 
+pytest.skip("Temporarily disabled", allow_module_level=True)
 
 # ---------------------------------------------------------------------------
 # Session-scoped client fixture

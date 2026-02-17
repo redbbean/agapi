@@ -15,7 +15,7 @@ from agapi.agents.client import AGAPIClient
 from agapi.agents.functions import *
 import pytest
 
-pytest.skip("Temporarily disabled", allow_module_level=True)
+# pytest.skip("Temporarily disabled", allow_module_level=True)
 
 # ---------------------------------------------------------------------
 # Client
