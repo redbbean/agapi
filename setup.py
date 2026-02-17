@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="agapi",
-    version="2025.12.25",
+    version="2026.2.2",
     author="Kamal Choudhary",
     author_email="kchoudh2@jhu.edu",
     description="agapi",
