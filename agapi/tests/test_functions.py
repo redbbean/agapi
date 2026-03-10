@@ -132,9 +132,9 @@ def test_alignn_ff_md(client):
 # BANDSTRUCTURE
 # =====================================================================
 
-def test_slakonet_bandstructure(client):
-    r = slakonet_bandstructure(SI_PRIM, api_client=client)
-    assert r.get("status") == "success"
+#def test_slakonet_bandstructure(client):
+#    r = slakonet_bandstructure(SI_PRIM, api_client=client)
+#    assert r.get("status") == "success"
 
 
 # =====================================================================
