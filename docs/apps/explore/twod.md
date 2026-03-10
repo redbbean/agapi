@@ -33,12 +33,17 @@ Browse, search, and visualize properties of 2D materials from the JARVIS-DFT 2D 
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/twod/data/{jid}",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/twod/search",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

@@ -1,17 +1,17 @@
 site_name: AtomGPT.org API (AGAPI) Documentation
 site_url: https://atomgptlab.github.io/agapi
-site_description: Documentation for AtomGPT.org API (AGAPI)- 50+ web apps for materials science, AI, and quantum computation
+site_description: Documentation for AtomGPT.org - 50+ web apps for materials science, AI, and quantum computation
 site_author: Kamal Choudhary
 repo_url: https://github.com/atomgptlab/agapi
 repo_name: atomgptlab/agapi
 edit_uri: edit/main/docs/
 
-copyright: "&copy; 2025 AtomGPT Lab, Johns Hopkins University"
+copyright: "&copy; 2025 AtomGPTLab, Johns Hopkins University"
 
 theme:
   name: material
-  logo: https://avatars.githubusercontent.com/u/214565042?s=400&u=ab5dc6d2f7625438001607aa1a06bd8d22c85368&v=4 
-  favicon: https://avatars.githubusercontent.com/u/214565042?s=400&u=ab5dc6d2f7625438001607aa1a06bd8d22c85368&v=4
+  logo: assets/logo.png
+  favicon: assets/favicon.png
   icon:
     repo: fontawesome/brands/github
   palette:
@@ -130,7 +130,6 @@ nav:
       - Structure Visualizer: apps/build/structure-visualizer.md
       - Heterostructure Builder: apps/build/heterostructure.md
       - Workflow Builder: apps/build/workflow.md
-      - Code Playground: apps/build/code-playground.md
     - Predict:
       - apps/predict/index.md
       - ALIGNN Predictor: apps/predict/alignn.md
@@ -168,11 +167,6 @@ nav:
     - ALIGNN-FF Molecular Dynamics: tutorials/alignn-ff-md.md
     - Quantum VQE for Solids: tutorials/quantum-vqe.md
     - Building Custom Apps: tutorials/custom-apps.md
-  - Contributing:
-    - contributing/index.md
-    - Plugin System: contributing/plugin-system.md
-    - App Template: contributing/app-template.md
-    - Style Guide: contributing/style-guide.md
   - References:
     - references/index.md
     - Publications: references/publications.md

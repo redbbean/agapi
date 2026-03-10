@@ -32,12 +32,17 @@ Battery cathode voltage profile and theoretical capacity predictor. Supports mod
 ```python
 import requests
 
-resp = requests.post(
+response = requests.post(
     "https://atomgpt.org/battery/predict",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

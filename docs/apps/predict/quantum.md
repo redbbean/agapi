@@ -34,12 +34,17 @@ Run Qiskit VQE/VQD on Wannier tight-binding Hamiltonians from JARVIS-DFT using s
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/quantum/bandstructure",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/quantum/vqe",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-816", "kpoint": [0.5, 0.0, 0.5], "ham_type": "electron", "reps": 2},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

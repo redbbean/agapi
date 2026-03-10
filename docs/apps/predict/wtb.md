@@ -33,12 +33,17 @@ Wannier tight-binding Hamiltonian bandstructure and DOS. Selects material by JID
 ```python
 import requests
 
-resp = requests.post(
+response = requests.post(
     "https://atomgpt.org/wtb/predict",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

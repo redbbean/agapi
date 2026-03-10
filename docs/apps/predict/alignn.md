@@ -34,12 +34,17 @@ Predict 50+ materials properties with ALIGNN graph neural networks. Query by JAR
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/alignn/web_predict",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/alignn/query",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

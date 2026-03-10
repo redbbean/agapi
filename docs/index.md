@@ -3,9 +3,9 @@ title: AtomGPT.org API (AGAPI) Documentation
 description: 50+ web apps for materials science, AI, and quantum computation
 ---
 
-# AtomGPT.org Documentation
+# AtomGPT.org API(AGAPI) Documentation
 
-Welcome to the documentation for [AtomGPT.org](https://atomgpt.org) API (AGAPI)â€” a comprehensive platform with **50+ web applications** for materials science, powered by the JARVIS ecosystem.
+Welcome to the documentation for [AtomGPT.org](https://atomgpt.org) API - a comprehensive platform with **50+ web applications** for materials science, powered by the JARVIS ecosystem.
 
 <div class="grid cards" markdown>
 
@@ -67,12 +67,10 @@ Welcome to the documentation for [AtomGPT.org](https://atomgpt.org) API (AGAPI)â
 | :material-github: **GitHub** | [github.com/atomgptlab](https://github.com/atomgptlab) |
 | :material-api: **API** | [API Reference](api/) |
 | :material-school: **Tutorials** | [Tutorials](tutorials/) |
-| :material-puzzle: **Contribute** | [Contributing Guide](contributing/) |
-| :material-book-open-variant: **JARVIS** | [jarvis.nist.gov](https://jarvis.nist.gov) |
 
 ## Citation
 
-If you use AtomGPT.org API in your research, please cite:
+If you use AtomGPT.org in your research, please cite:
 
 ```bibtex
 @article{lee2025agapi,

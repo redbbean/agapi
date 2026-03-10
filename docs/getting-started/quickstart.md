@@ -9,7 +9,7 @@ Get started with AtomGPT.org in 2 minutes.
 ## 1. Install
 
 ```bash
-pip install agapi
+pip install agapi jarvis-tools scipy httpx
 ```
 
 ## 2. Get Your API Key

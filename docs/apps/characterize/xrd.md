@@ -39,12 +39,17 @@ XRD analysis suite: simulate powder XRD patterns from crystal structures, match 
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/xrd/generate",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/xrd/query",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

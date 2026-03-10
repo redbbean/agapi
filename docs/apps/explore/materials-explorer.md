@@ -107,7 +107,11 @@ Returns full property set for a single material.
 
     response = requests.post(
         "https://atomgpt.org/materials_explorer/search",
-        headers={"Authorization": "Bearer YOUR_TOKEN"},
+        headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
         json={"formula": "SrTiO3"},
     )
     data = response.json()
@@ -123,7 +127,11 @@ Returns full property set for a single material.
 
     response = requests.post(
         "https://atomgpt.org/materials_explorer/search",
-        headers={"Authorization": "Bearer YOUR_TOKEN"},
+        headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
         json={
             "elements": ["Ti", "O"],
             "element_mode": "all",

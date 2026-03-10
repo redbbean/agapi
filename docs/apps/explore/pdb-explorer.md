@@ -33,12 +33,17 @@ Search 200K+ protein structures from RCSB PDB. 3D Mol* viewer (RCSB embed iframe
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/pdb_explorer/entry/{pdb_id}",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/pdb_explorer/search",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

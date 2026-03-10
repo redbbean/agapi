@@ -35,12 +35,17 @@ Protein structure prediction using ESMFold/OpenFold. Paste amino acid sequence, 
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/openfold/query",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/protein_fold/query",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

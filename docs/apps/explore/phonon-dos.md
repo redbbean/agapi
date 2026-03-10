@@ -33,12 +33,17 @@ Visualize and compare phonon density of states from JARVIS-DFT. Vibrational spec
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/phonon_dos/data/{jid}",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/phonon_dos/search",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

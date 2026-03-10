@@ -33,12 +33,17 @@ Visualize and compare SOC spillage data from JARVIS-DFT for identifying topologi
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/spillage/data/{jid}",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/spillage/search",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

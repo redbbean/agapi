@@ -33,12 +33,17 @@ Look up and interactively plot the MBJ dielectric function ε(ω) for any JARVIS
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/dielectric_function/data/{jid}",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/dielectric_function/search",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

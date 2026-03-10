@@ -33,12 +33,17 @@ High-Entropy Alloy design tool. Compute thermodynamic parameters (ΔS_mix, δ, V
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/hea/screen",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/hea/compute",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

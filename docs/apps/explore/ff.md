@@ -32,12 +32,17 @@ JARVIS Force-Field (FF) database search. Search by elements, JID, formula, cryst
 ```python
 import requests
 
-resp = requests.post(
+response = requests.post(
     "https://atomgpt.org/ff/search",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

@@ -33,12 +33,17 @@ Visualize and compare electric field gradient (EFG) tensors from JARVIS-DFT for 
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/efg/data/{jid}",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/efg/search",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

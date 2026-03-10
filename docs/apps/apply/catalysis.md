@@ -32,12 +32,17 @@ Predict adsorption energy of a molecule on a substrate using ALIGNN-FF. Input: s
 ```python
 import requests
 
-resp = requests.post(
+response = requests.post(
     "https://atomgpt.org/catalysis/predict",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

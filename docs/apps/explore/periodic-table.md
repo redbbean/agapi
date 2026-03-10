@@ -32,12 +32,15 @@ Interactive periodic table with JARVIS property overlays. Backend provides per-e
 ```python
 import requests
 
-resp = requests.post(
+response = requests.get(
     "https://atomgpt.org/periodic_table/stats",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+    },
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

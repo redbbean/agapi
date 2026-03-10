@@ -34,12 +34,17 @@ Balance chemical equations (SVD null-space), compute reaction thermodynamics ΔH
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/reaction_network/network",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/reaction_network/balance",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"equation": "Fe2O3 + C -> Fe + CO2"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

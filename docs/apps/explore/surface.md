@@ -33,12 +33,17 @@ Browse, search, and visualize surface properties from the JARVIS surface databas
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/surface/data/{idx}",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/surface/search",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

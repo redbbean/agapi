@@ -37,12 +37,17 @@ Universal ML force field. Structure relaxation (BFGS), geometry optimization, NV
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/alignn_ff/phonons",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/alignn_ff/query",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

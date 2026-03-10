@@ -33,12 +33,17 @@ Visualize and compare infrared spectra from JARVIS-DFT DFPT calculations. Born e
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/ir/data/{jid}",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/ir/search",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

@@ -33,12 +33,17 @@ Visualize and compare the 6×6 elastic stiffness tensor Cij for any JARVIS-DFT m
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/elastic_tensor/data/{jid}",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/elastic_tensor/search",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent

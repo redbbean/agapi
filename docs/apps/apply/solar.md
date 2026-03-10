@@ -33,12 +33,17 @@ Predict theoretical solar cell performance: SLME (spectroscopic limited maximum 
 ```python
 import requests
 
-resp = requests.post(
-    "https://atomgpt.org/solar/predict-data",
-    headers={"Authorization": "Bearer YOUR_TOKEN"},
-    json={"jid": "JVASP-1002"}
+response = requests.post(
+    "https://atomgpt.org/solar/predict-jid",
+    headers={
+        "Authorization": "Bearer sk-XYZ",
+        "accept": "application/json",
+        "Content-Type": "application/json",
+    },
+    json={"jid": "JVASP-1002"},
 )
-print(resp.json())
+data = response.json()
+print(data)
 ```
 
 ## AGAPI Agent
