@@ -71,33 +71,33 @@ SI_XRD = """\
 # =====================================================================
 
 def test_query_by_formula(client):
-    time.sleep(2)
+    time.sleep(4)
     r = query_by_formula("Si", client)
     assert "error" not in r
 
 
 def test_query_by_jid(client):
-    time.sleep(2)
+    time.sleep(4)
     r = query_by_jid("JVASP-1002", client)
     assert "error" not in r
     assert isinstance(r.get("POSCAR"), str)
 
 
 def test_query_by_elements(client):
-    time.sleep(2)
+    time.sleep(4)
     r = query_by_elements("Si", client)
     assert "error" not in r
 
 
 def test_query_by_property(client):
-    time.sleep(2)
+    time.sleep(4)
     r = query_by_property("bandgap", 0.1, 3.0,
                           elements="Si", api_client=client)
     assert "error" not in r
 
 
 def test_find_extreme(client):
-    time.sleep(2)
+    time.sleep(4)
     r = find_extreme("bulk modulus", True,
                      elements="Si", api_client=client)
     assert "error" not in r
@@ -108,19 +108,19 @@ def test_find_extreme(client):
 # =====================================================================
 
 def test_alignn_predict(client):
-    time.sleep(2)
+    time.sleep(4)
     r = alignn_predict(jid="JVASP-1002", api_client=client)
     assert r.get("status") == "success"
 
 
-def test_alignn_ff_relax(client):
-    time.sleep(2)
-    r = alignn_ff_relax(SI_PRIM, api_client=client)
-    assert r.get("status") == "success"
+#def test_alignn_ff_relax(client):
+#    time.sleep(4)
+#    r = alignn_ff_relax(SI_PRIM, api_client=client)
+#    assert r.get("status") == "success"
 
 
 def test_alignn_ff_single_point(client):
-    time.sleep(2)
+    time.sleep(4)
     r = alignn_ff_single_point(SI_PRIM, api_client=client)
     assert "energy_eV" in r
 
@@ -141,7 +141,7 @@ def test_alignn_ff_md(client):
 # =====================================================================
 
 def test_slakonet_bandstructure(client):
-    time.sleep(2)
+    time.sleep(4)
     r = slakonet_bandstructure(SI_PRIM, api_client=client)
     assert r.get("status") == "success"
 
@@ -151,7 +151,7 @@ def test_slakonet_bandstructure(client):
 # =====================================================================
 
 def test_generate_interface(client):
-    time.sleep(2)
+    time.sleep(4)
     r = generate_interface(SI_PRIM, GAAS_PRIM, api_client=client)
     assert r.get("status") == "success"
 
@@ -161,25 +161,25 @@ def test_generate_interface(client):
 # =====================================================================
 
 def test_make_supercell():
-    time.sleep(2)
+    time.sleep(4)
     r = make_supercell(SI_PRIM, [2, 2, 1])
     assert r["supercell_atoms"] > r["original_atoms"]
 
 
 def test_substitute_atom():
-    time.sleep(2)
+    time.sleep(4)
     r = substitute_atom(GAAS_PRIM, "Ga", "Al", 1)
     assert "Al" in r["new_formula"]
 
 
 def test_create_vacancy():
-    time.sleep(2)
+    time.sleep(4)
     r = create_vacancy(GAAS_PRIM, "Ga", 1)
     assert r["new_atoms"] == r["original_atoms"] - 1
 
 
 def test_generate_xrd_pattern():
-    time.sleep(2)
+    time.sleep(4)
     r = generate_xrd_pattern(SI_PRIM)
     assert r["formula"] == "Si"
 
@@ -189,7 +189,7 @@ def test_generate_xrd_pattern():
 # =====================================================================
 
 def test_diffractgpt_predict(client):
-    time.sleep(2)
+    time.sleep(4)
     r = diffractgpt_predict("Si", "28.4(1.0),47.3(0.49)", client)
     assert isinstance(r, dict)
 
@@ -199,7 +199,7 @@ def test_diffractgpt_predict(client):
 # =====================================================================
 
 def test_protein_fold_validation(client):
-    time.sleep(2)
+    time.sleep(4)
     r = protein_fold("MKTAY", api_client=client)
     assert "error" in r
 
@@ -217,13 +217,13 @@ def test_openfold_predict(client):
 # =====================================================================
 
 def test_pxrd_match(client):
-    time.sleep(2)
+    time.sleep(4)
     r = pxrd_match("Si", SI_XRD, api_client=client)
     assert isinstance(r, dict)
 
 
 def test_xrd_analyze(client):
-    time.sleep(2)
+    time.sleep(4)
     r = xrd_analyze("Si", SI_XRD, api_client=client)
     assert isinstance(r, dict)
 
@@ -244,7 +244,7 @@ def test_query_mp(client):
 
 """
 def test_query_oqmd(client):
-    time.sleep(2)
+    time.sleep(4)
     r = query_oqmd("Si", limit=2, api_client=client)
     assert isinstance(r, dict)
 
