@@ -2,270 +2,330 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://atomgptlab.github.io/agapi/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/api/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/api/agents/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/api/optimade/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/api/python-client/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/api/rest-endpoints/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/apply/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/apply/battery/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/apply/catalysis/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/apply/dac/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/apply/solar/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/apply/supercon/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
+    </url>
+    <url>
+         <loc>https://atomgptlab.github.io/agapi/apps/build/</loc>
+         <lastmod>2026-03-30</lastmod>
+    </url>
+    <url>
+         <loc>https://atomgptlab.github.io/agapi/apps/build/heterostructure/</loc>
+         <lastmod>2026-03-30</lastmod>
+    </url>
+    <url>
+         <loc>https://atomgptlab.github.io/agapi/apps/build/structure-visualizer/</loc>
+         <lastmod>2026-03-30</lastmod>
+    </url>
+    <url>
+         <loc>https://atomgptlab.github.io/agapi/apps/build/workflow/</loc>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/characterize/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/characterize/microscopy/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/characterize/raman/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/characterize/xrd/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/convexhull/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/dielectric-function/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/efg/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/elastic-tensor/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/electronic-dos/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/ff/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
+    </url>
+    <url>
+         <loc>https://atomgptlab.github.io/agapi/apps/explore/hardmat/</loc>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/hea/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
+    </url>
+    <url>
+         <loc>https://atomgptlab.github.io/agapi/apps/explore/interface-db/</loc>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/interface/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/ir/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
+    </url>
+    <url>
+         <loc>https://atomgptlab.github.io/agapi/apps/explore/literature/</loc>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/materials-explorer/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
+    </url>
+    <url>
+         <loc>https://atomgptlab.github.io/agapi/apps/explore/meltmat/</loc>
+         <lastmod>2026-03-30</lastmod>
+    </url>
+    <url>
+         <loc>https://atomgptlab.github.io/agapi/apps/explore/omim/</loc>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/optimade/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/pdb-explorer/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/periodic-table/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/phonon-dos/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/piezoelectric/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
+    </url>
+    <url>
+         <loc>https://atomgptlab.github.io/agapi/apps/explore/polymer-builder/</loc>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/polymer/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
+    </url>
+    <url>
+         <loc>https://atomgptlab.github.io/agapi/apps/explore/pourbaix/</loc>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/reaction-network/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
+    </url>
+    <url>
+         <loc>https://atomgptlab.github.io/agapi/apps/explore/sdss/</loc>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/spillage/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/surface/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/thermoelectric/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
+    </url>
+    <url>
+         <loc>https://atomgptlab.github.io/agapi/apps/explore/tokenizer/</loc>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/twod/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
+    </url>
+    <url>
+         <loc>https://atomgptlab.github.io/agapi/apps/explore/unit-converter/</loc>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/explore/vacancy/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
+    </url>
+    <url>
+         <loc>https://atomgptlab.github.io/agapi/apps/explore/webbrowser/</loc>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/predict/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/predict/alignn-ff/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/predict/alignn/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/predict/protein-fold/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/predict/quantum/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/predict/slakonet/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/predict/wtb/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/validate/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/validate/ai-detector/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/apps/validate/hallucination/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/contributing/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/contributing/app-template/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/contributing/plugin-system/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/contributing/style-guide/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/getting-started/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/getting-started/api-overview/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/getting-started/authentication/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/getting-started/quickstart/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/references/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/references/changelog/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/references/publications/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/tutorials/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/tutorials/alignn-ff-md/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/tutorials/custom-apps/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/tutorials/jarvis-basics/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/tutorials/ml-prediction/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
     <url>
          <loc>https://atomgptlab.github.io/agapi/tutorials/quantum-vqe/</loc>
-         <lastmod>2026-03-10</lastmod>
+         <lastmod>2026-03-30</lastmod>
     </url>
 </urlset>
