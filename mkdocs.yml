@@ -116,6 +116,7 @@ nav:
       - Vacancy Explorer: apps/explore/vacancy.md
       - Surface Explorer: apps/explore/surface.md
       - Interface Explorer: apps/explore/interface.md
+      - Interface Database: apps/explore/interface-db.md
       - 2D Materials: apps/explore/twod.md
       - Polymer Explorer: apps/explore/polymer.md
       - Force Field DB: apps/explore/ff.md
@@ -125,10 +126,17 @@ nav:
       - PDB Explorer: apps/explore/pdb-explorer.md
       - OPTIMADE Explorer: apps/explore/optimade.md
       - Convex Hull: apps/explore/convexhull.md
+      - Literature Explorer: apps/explore/literature.md
+      - OMIM Gene Explorer: apps/explore/omim.md
+      - SDSS SkyServer: apps/explore/sdss.md
+      - Web Browser: apps/explore/webbrowser.md
+      - Unit Converter: apps/explore/unit-converter.md
+      - Tokenizer Playground: apps/explore/tokenizer.md
     - Build:
       - apps/build/index.md
       - Structure Visualizer: apps/build/structure-visualizer.md
       - Heterostructure Builder: apps/build/heterostructure.md
+      - Polymer Chain Builder: apps/build/polymer-builder.md
       - Workflow Builder: apps/build/workflow.md
     - Predict:
       - apps/predict/index.md
@@ -150,6 +158,9 @@ nav:
       - Battery Explorer: apps/apply/battery.md
       - Catalysis: apps/apply/catalysis.md
       - Direct Air Capture: apps/apply/dac.md
+      - HardMat: apps/apply/hardmat.md
+      - MeltMat: apps/apply/meltmat.md
+      - PourbaixMat: apps/apply/pourbaix.md
     - Validate:
       - apps/validate/index.md
       - AI Detector: apps/validate/ai-detector.md
