@@ -46,7 +46,12 @@ import agapi.agents.functions as F
 # ── PydanticAI imports ────────────────────────────────────────────────────────
 
 from pydantic_ai import Agent, RunContext
-from pydantic_ai.models.openai import OpenAIModel
+
+# pydantic-ai renamed OpenAIModel → OpenAIChatModel; fall back for older versions.
+try:
+    from pydantic_ai.models.openai import OpenAIChatModel as _OpenAIChatModel
+except ImportError:
+    from pydantic_ai.models.openai import OpenAIModel as _OpenAIChatModel
 
 # ── Module-level agent (tools registered once at import) ─────────────────────
 # The AGAPIClient (for tool calls) is passed per-run as deps.
@@ -54,7 +59,7 @@ from pydantic_ai.models.openai import OpenAIModel
 try:
     # pydantic-ai 0.1+: provider-based setup
     from pydantic_ai.providers.openai import OpenAIProvider
-    _model = OpenAIModel(
+    _model = _OpenAIChatModel(
         AgentConfig.DEFAULT_MODEL,
         provider=OpenAIProvider(
             base_url=f"{AgentConfig.API_BASE}/api",
@@ -63,7 +68,7 @@ try:
     )
 except ImportError:
     # older pydantic-ai: direct kwargs
-    _model = OpenAIModel(
+    _model = _OpenAIChatModel(
         AgentConfig.DEFAULT_MODEL,
         base_url=f"{AgentConfig.API_BASE}/api",
         api_key=AgentConfig.DEFAULT_API_KEY,

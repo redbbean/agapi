@@ -68,12 +68,20 @@ class AGAPIAgentMCP:
     """
     AGAPI agent using LangGraph + MCP tool transport.
 
-    On __init__, starts a persistent background event loop in a daemon thread
-    and connects to the MCP server subprocess. All queries are dispatched to
-    the background loop so the public interface stays synchronous.
+    Supports two MCP server modes:
+      - local (default): spawns agent_mcp_server.py as a subprocess via stdio.
+        Tools are the same 28 AGAPI functions, run in-process on the same machine.
+      - remote: connects to a running MCP server over HTTP/SSE (e.g. the public
+        AtomGPT MCP server at https://atomgpt.org/mcp). No subprocess needed;
+        the server is always-on and network-accessible.
 
     Usage:
+        # Local subprocess (default)
         agent = AGAPIAgentMCP()
+
+        # Remote AtomGPT MCP server
+        agent = AGAPIAgentMCP(server_url="https://atomgpt.org/mcp")
+
         response, tools_called = agent.query_sync_benchmark("What is GaN's bandgap?")
     """
 
@@ -86,6 +94,7 @@ class AGAPIAgentMCP:
         timeout: int = None,
         api_base: str = None,
         system_prompt: str = None,
+        server_url: str = None,
     ):
         self.api_key        = api_key        or AgentConfig.DEFAULT_API_KEY
         self.model          = model          or AgentConfig.DEFAULT_MODEL
@@ -94,6 +103,8 @@ class AGAPIAgentMCP:
         self.timeout        = timeout        or AgentConfig.DEFAULT_TIMEOUT
         self.api_base       = api_base       or AgentConfig.API_BASE
         self.system_prompt  = system_prompt  or SYSTEM_PROMPT
+        # None → local subprocess; a URL string → remote SSE server
+        self.server_url     = server_url
 
         self._llm = ChatOpenAI(
             base_url=f"{self.api_base}/api",
@@ -124,18 +135,32 @@ class AGAPIAgentMCP:
 
     async def _connect(self):
         """
-        Launch the MCP server subprocess, discover its tools, and build the
-        LangGraph create_react_agent. Called once from __init__.
+        Connect to the MCP server (local subprocess or remote SSE) and build
+        the LangGraph create_react_agent. Called once from __init__.
         """
         from langchain_mcp_adapters.client import MultiServerMCPClient
 
-        self._mcp_client = MultiServerMCPClient({
-            "agapi": {
-                "command": sys.executable,
-                "args":    [str(_SERVER_PATH)],
-                "transport": "stdio",
+        if self.server_url:
+            # Remote MCP server over Streamable HTTP — no subprocess needed.
+            # AtomGPT requires the AGAPI key as a Bearer token.
+            server_config = {
+                "agapi": {
+                    "url": self.server_url,
+                    "transport": "streamable_http",
+                    "headers": {"Authorization": f"Bearer {self.api_key}"},
+                }
             }
-        })
+        else:
+            # Local MCP server spawned as a subprocess via stdio
+            server_config = {
+                "agapi": {
+                    "command": sys.executable,
+                    "args":    [str(_SERVER_PATH)],
+                    "transport": "stdio",
+                }
+            }
+
+        self._mcp_client = MultiServerMCPClient(server_config)
         raw_tools = await self._mcp_client.get_tools()
         tools = [self._stringify_tool(t) for t in raw_tools]
 

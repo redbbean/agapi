@@ -47,29 +47,46 @@ from .agent import SYSTEM_PROMPT
 import agapi.agents.functions as F
 
 # ── OpenAI Agents SDK imports ─────────────────────────────────────────────────
-# Must set OPENAI_API_KEY before importing agents — the SDK validates it on import.
+# Set OPENAI_API_KEY before importing agents so the SDK doesn't error on import.
+os.environ.setdefault("OPENAI_API_KEY", os.environ.get("AGAPI_KEY", AgentConfig.DEFAULT_API_KEY))
 
-_agapi_key = os.environ.get("AGAPI_KEY", AgentConfig.DEFAULT_API_KEY)
-os.environ.setdefault("OPENAI_API_KEY", _agapi_key)
+from agents import (
+    Agent,
+    AsyncOpenAI,
+    OpenAIChatCompletionsModel,
+    Runner,
+    function_tool,
+    set_tracing_disabled,
+)
 
-from openai import OpenAI
-from agents import Agent, Runner, function_tool, set_default_openai_client
+# Disable SDK tracing — it tries to phone home to platform.openai.com with
+# whatever key is in OPENAI_API_KEY, which is an AGAPI key and gets rejected.
+set_tracing_disabled(disabled=True)
 
 # ── Shared API client for tool calls ─────────────────────────────────────────
-# Created once at module import. Runner uses the OpenAI client set below for
-# LLM calls; this AGAPIClient is used inside each tool for AGAPI API calls.
+# Created once at module import. The OpenAIChatCompletionsModel below uses
+# _openai_client for LLM calls; _api_client is used inside each tool for
+# AGAPI REST API calls.
+
+_agapi_key = os.environ.get("AGAPI_KEY", AgentConfig.DEFAULT_API_KEY)
 
 _api_client = AGAPIClient(
-    api_key=os.environ.get("AGAPI_KEY", AgentConfig.DEFAULT_API_KEY),
+    api_key=_agapi_key,
     api_base=AgentConfig.API_BASE,
     timeout=AgentConfig.DEFAULT_TIMEOUT,
 )
 
-# Point the SDK at the AGAPI OpenAI-compatible endpoint
-set_default_openai_client(OpenAI(
+# Use ChatCompletions API explicitly — AGAPI supports /v1/chat/completions
+# but not the newer Responses API (/v1/responses) that the SDK defaults to.
+_openai_client = AsyncOpenAI(
     base_url=f"{AgentConfig.API_BASE}/api",
-    api_key=os.environ.get("AGAPI_KEY", AgentConfig.DEFAULT_API_KEY),
-))
+    api_key=_agapi_key,
+)
+
+_chat_model = OpenAIChatCompletionsModel(
+    model=AgentConfig.DEFAULT_MODEL,
+    openai_client=_openai_client,
+)
 
 
 def _j(result) -> str:
@@ -388,7 +405,7 @@ _sdk_agent = Agent(
     name="AGAPI Materials Science Agent",
     instructions=SYSTEM_PROMPT,
     tools=_TOOLS,
-    model=AgentConfig.DEFAULT_MODEL,
+    model=_chat_model,
 )
 
 
